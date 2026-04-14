@@ -10,22 +10,22 @@ import nl.obren.sokrates.common.utils.RegexUtils;
 import nl.obren.sokrates.sourcecode.analysis.FileHistoryAnalysisConfig;
 import nl.obren.sokrates.sourcecode.filehistory.DateUtils;
 import nl.obren.sokrates.sourcecode.operations.ComplexOperation;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.*;
+import java.util.function.Consumer;
 
 public class GitHistoryUtils {
     public static final String GIT_HISTORY_FILE_NAME = "git-history.txt";
     public static final String EARLIEST_DATE = "1980-01-01";
     private static final Log LOG = LogFactory.getLog(GitHistoryUtils.class);
-    private static List<FileUpdate> updates = null;
-    private static Map<String, String> anonymizeEmails = new HashMap<>();
 
     public static String printContributorsCommand() {
         return "git ls-files -z | xargs -0 -n1 -I{} -- git log --date=short --format=\"%ad %ae %H {}\" {} > " + GIT_HISTORY_FILE_NAME;
@@ -37,12 +37,10 @@ public class GitHistoryUtils {
         Map<String, AuthorCommit> commitsMap = new HashMap<>();
 
         int index[] = {0};
-
-        List<FileUpdate> historyFromFile = getHistoryFromFile(file, config);
-        historyFromFile.forEach(fileUpdate -> {
+        streamHistoryFromFile(file, config, fileUpdate -> {
             index[0] += 1;
-            if (index[0] % 1000 == 1 || index[0] == historyFromFile.size()) {
-                LOG.info("Importing " + fileUpdate.getAuthorEmail() + " " + fileUpdate.getDate() + " (" + index[0] + " / " + historyFromFile.size() + ")");
+            if (index[0] % 1000 == 1) {
+                LOG.info("Importing " + fileUpdate.getAuthorEmail() + " " + fileUpdate.getDate() + " (" + index[0] + ")");
             }
             String commitId = fileUpdate.getCommitId();
             if (!commitIds.contains(commitId)) {
@@ -68,38 +66,38 @@ public class GitHistoryUtils {
     }
 
     public static List<FileUpdate> getHistoryFromFile(File file, FileHistoryAnalysisConfig config) {
-        if (updates != null) {
-            return updates;
-        }
-        updates = new ArrayList<>();
-        LOG.info("Reading history from file");
-        List<String> lines;
-        try {
-            lines = FileUtils.readLines(file, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            LOG.info(e.getMessage());
-            return updates;
-        }
-
-        int displayCounter[] = {0};
-        lines.forEach(line -> {
-            displayCounter[0] += 1;
-            boolean lastLine = displayCounter[0] == lines.size();
-            if (displayCounter[0] % 1000 == 1 || lastLine) {
-                LOG.info("Reading commit line " + displayCounter[0] + "/" + lines.size() +
-                        ": " + StringUtils.abbreviate(line, 64));
-            }
-            FileUpdate fileUpdate = GitHistoryUtils.parseLine(line, config);
-            if (fileUpdate != null) {
-                fileUpdate.setBot(isBot(fileUpdate.getAuthorEmail(), config.getBots()));
-                updates.add(fileUpdate);
-            }
-        });
-
+        List<FileUpdate> updates = new ArrayList<>();
+        streamHistoryFromFile(file, config, updates::add);
         return updates;
     }
 
+    public static void streamHistoryFromFile(File file, FileHistoryAnalysisConfig config, Consumer<FileUpdate> consumer) {
+        LOG.info("Reading history from file");
+        Map<String, String> anonymizeEmails = new HashMap<>();
+        int displayCounter[] = {0};
+        try (BufferedReader reader = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                displayCounter[0] += 1;
+                if (displayCounter[0] % 1000 == 1) {
+                    LOG.info("Reading commit line " + displayCounter[0] + ": " + StringUtils.abbreviate(line, 64));
+                }
+                FileUpdate fileUpdate = GitHistoryUtils.parseLine(line, config, anonymizeEmails);
+                if (fileUpdate != null) {
+                    fileUpdate.setBot(isBot(fileUpdate.getAuthorEmail(), config.getBots()));
+                    consumer.accept(fileUpdate);
+                }
+            }
+        } catch (IOException e) {
+            LOG.info(e.getMessage());
+        }
+    }
+
     public static FileUpdate parseLine(String line, FileHistoryAnalysisConfig config) {
+        return parseLine(line, config, new HashMap<>());
+    }
+
+    public static FileUpdate parseLine(String line, FileHistoryAnalysisConfig config, Map<String, String> anonymizeEmails) {
         List<String> ignoreContributors = config.getIgnoreContributors();
         boolean anonymize = config.isAnonymizeContributors();
 

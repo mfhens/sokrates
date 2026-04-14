@@ -60,7 +60,9 @@ public class SummaryUtils {
 
         boolean mainExists = analysisResults.getMainAspectAnalysisResults().getFilesCount() > 0;
         boolean showDuplication = mainExists && !analysisResults.skipDuplicationAnalysis();
-        boolean showCommitReports = mainExists && analysisResults.getFilesHistoryAnalysisResults().getHistory(Integer.MAX_VALUE).size() > 0 && analysisResults.getContributorsAnalysisResults().getCommitsCount() > 0;
+        boolean showCommitReports = mainExists
+                && analysisResults.getFilesHistoryAnalysisResults().getHistoryFileCount() > 0
+                && analysisResults.getContributorsAnalysisResults().getCommitsCount() > 0;
         boolean showControls = mainExists && config.getGoalsAndControls().size() > 0;
         boolean showUnits = mainExists && analysisResults.getUnitsAnalysisResults().getTotalNumberOfUnits() > 0;
 

@@ -13,6 +13,7 @@ import nl.obren.sokrates.sourcecode.core.CodeConfiguration;
 import nl.obren.sokrates.sourcecode.core.FoundTag;
 import nl.obren.sokrates.sourcecode.core.TagRule;
 import nl.obren.sokrates.sourcecode.dependencies.Dependency;
+import nl.obren.sokrates.sourcecode.githistory.GitHistoryIndex;
 import nl.obren.sokrates.sourcecode.metrics.MetricsList;
 
 import java.util.ArrayList;
@@ -52,6 +53,8 @@ public class CodeAnalysisResults {
 
     private DuplicationAnalysisResults duplicationAnalysisResults = new DuplicationAnalysisResults();
     private ContributorsAnalysisResults contributorsAnalysisResults = new ContributorsAnalysisResults();
+    @JsonIgnore
+    private GitHistoryIndex historyIndex;
 
     private int numberOfExcludedFiles;
     private Map<String, Integer> excludedExtensions;
@@ -298,6 +301,16 @@ public class CodeAnalysisResults {
     public boolean skipDuplicationAnalysis() {
         AnalysisConfig analysis = getCodeConfiguration().getAnalysis();
         return analysis.isSkipDuplication() || getMainAspectAnalysisResults().getLinesOfCode() > analysis.getLocDuplicationThreshold();
+    }
+
+    @JsonIgnore
+    public GitHistoryIndex getHistoryIndex() {
+        return historyIndex;
+    }
+
+    @JsonIgnore
+    public void setHistoryIndex(GitHistoryIndex historyIndex) {
+        this.historyIndex = historyIndex;
     }
 
 }

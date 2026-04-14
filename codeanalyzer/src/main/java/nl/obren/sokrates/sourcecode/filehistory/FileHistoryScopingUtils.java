@@ -57,7 +57,7 @@ public class FileHistoryScopingUtils {
 
         allFiles.forEach(sourceFile -> {
             if (sourceFile.getFileModificationHistory() != null) {
-                int updateCount = sourceFile.getFileModificationHistory().getDates().size();
+                int updateCount = sourceFile.getFileModificationHistory().getActiveDaysCount();
                 String relativePath = sourceFile.getRelativePath();
                 if (updateCount <= thresholds.getLow()) {
                     componentChangesNegligible.getFiles().add(relativePath);

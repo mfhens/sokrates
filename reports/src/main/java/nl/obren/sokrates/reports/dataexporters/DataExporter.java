@@ -292,7 +292,7 @@ public class DataExporter {
         StringBuilder content = new StringBuilder();
         content.append("file 1\tfile 2\t# same commits\t# commits file 1\t# commits file 2\n");
         if (filePairsChangedTogether.size() > 0) {
-            filePairsChangedTogether.sort((a, b) -> b.getCommits().size() - a.getCommits().size());
+            filePairsChangedTogether.sort((a, b) -> Integer.compare(b.getSharedCommitsCount(), a.getSharedCommitsCount()));
 
             int limit = Math.min(10000, filePairsChangedTogether.size());
             List<FilePairChangedTogether> limitedList = filePairsChangedTogether.subList(0, limit);
@@ -300,7 +300,7 @@ public class DataExporter {
             limitedList.forEach(pair -> {
                 content.append(pair.getSourceFile1().getRelativePath()).append("\t");
                 content.append(pair.getSourceFile2().getRelativePath()).append("\t");
-                content.append(pair.getCommits().size()).append("\t");
+                content.append(pair.getSharedCommitsCount()).append("\t");
                 content.append(pair.getCommitsCountFile1()).append("\t");
                 content.append(pair.getCommitsCountFile2()).append("\n");
             });
@@ -647,8 +647,15 @@ public class DataExporter {
             });
             File gitHistoryFile = new File(reportsFolder, "../../git-history.txt");
             if (gitHistoryFile.exists()) {
-                String gitHistoryContent = FileUtils.readFileToString(gitHistoryFile, UTF_8);
-                ZipUtils.stringToZipFile(new File(zipFolder, "git-history.zip"), "git-history.txt", gitHistoryContent);
+                StringBuilder gitHistorySummary = new StringBuilder();
+                gitHistorySummary.append("git history source: ").append(gitHistoryFile.getPath()).append("\n");
+                gitHistorySummary.append("size_bytes: ").append(gitHistoryFile.length()).append("\n");
+                gitHistorySummary.append("last_modified_ms: ").append(gitHistoryFile.lastModified()).append("\n");
+                if (analysisResults.getFilesHistoryAnalysisResults().isHistoryIndexed()) {
+                    gitHistorySummary.append("history_indexed: true\n");
+                    gitHistorySummary.append("history_source: ").append(analysisResults.getFilesHistoryAnalysisResults().getHistorySource()).append("\n");
+                }
+                ZipUtils.stringToZipFile(new File(zipFolder, "git-history.zip"), "git-history-summary.txt", gitHistorySummary.toString());
             }
         } catch (Throwable t) {
             t.printStackTrace();
@@ -737,11 +744,11 @@ public class DataExporter {
             if (history != null) {
                 builder.append(sourceFile.getRelativePath()).append("\t")
                         .append(sourceFile.getLinesOfCode()).append("\t")
-                        .append(history.getDates().size()).append("\t")
+                        .append(history.getActiveDaysCount()).append("\t")
                         .append(history.daysSinceFirstUpdate()).append("\t")
                         .append(history.daysSinceLatestUpdate()).append("\t")
-                        .append(history.getCommits().size()).append("\t")
-                        .append(history.countContributors()).append("\t")
+                        .append(history.getCommitsCount()).append("\t")
+                        .append(history.getContributorsCount()).append("\t")
                         .append(history.getOldestDate()).append("\t")
                         .append(history.getLatestDate()).append("\t")
                         .append(history.getOldestContributor()).append("\t")

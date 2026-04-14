@@ -79,7 +79,7 @@ public class SourceFileChangeDistribution extends RiskDistributionStats {
         reset();
         if (files != null) {
             files.stream().filter(f -> f.getFileModificationHistory() != null).forEach(sourceFile -> {
-                update(sourceFile.getFileModificationHistory() != null ? sourceFile.getFileModificationHistory().countContributors() : 0,
+                update(sourceFile.getFileModificationHistory() != null ? sourceFile.getFileModificationHistory().getContributorsCount() : 0,
                         sourceFile.getLinesOfCode());
             });
         }
@@ -87,7 +87,7 @@ public class SourceFileChangeDistribution extends RiskDistributionStats {
     }
 
     private int getNumberOfChanges(SourceFile sourceFile) {
-        return sourceFile.getFileModificationHistory().getDates().size();
+        return sourceFile.getFileModificationHistory().getActiveDaysCount();
     }
 }
 

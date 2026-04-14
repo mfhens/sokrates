@@ -50,11 +50,17 @@ public class TemporalDependenciesHelper {
                     dependency = new ComponentDependency(component1, component2);
                     dependenciesMap.put(key1, dependency);
                     dependencies.add(dependency);
-                    commits = new HashSet<>();
-                    commitsMap.put(key1, commits);
+                    if (!pair.getCommits().isEmpty()) {
+                        commits = new HashSet<>();
+                        commitsMap.put(key1, commits);
+                    }
                 }
-                commits.addAll(pair.getCommits());
-                dependency.setCount(commits.size());
+                if (pair.getCommits().isEmpty()) {
+                    dependency.setCount(dependency.getCount() + pair.getSharedCommitsCount());
+                } else {
+                    commits.addAll(pair.getCommits());
+                    dependency.setCount(commits.size());
+                }
             }
         });
 
@@ -95,6 +101,9 @@ public class TemporalDependenciesHelper {
             String component2 = "[" + file2 + "]";
 
             if (!component1.equalsIgnoreCase(component2)) {
+                if (filePairChangedTogether.getCommits().isEmpty()) {
+                    return;
+                }
                 filePairChangedTogether.getCommits().forEach(commit -> {
                     String commitId = "commit_" + commit;
                     ComponentDependency dependency1 = getDependency(commitId, component1, componentDependencies, componentDependenciesMap);
@@ -115,10 +124,12 @@ public class TemporalDependenciesHelper {
 
     private void addDependency(FilePairChangedTogether filePairChangedTogether, String component1, String component2) {
         ComponentDependency dependency = getDependency(component1, component2);
-
-        dependency.setCount(dependency.getCount() + 1);
+        dependency.setCount(dependency.getCount() + filePairChangedTogether.getSharedCommitsCount());
 
         List<String> commits = datesMap.get(dependency);
+        if (filePairChangedTogether.getCommits().isEmpty()) {
+            return;
+        }
         if (commits == null) {
             commits = new ArrayList<>();
             datesMap.put(dependency, commits);

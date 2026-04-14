@@ -95,12 +95,12 @@ public class FileSizeReportGenerator {
 
             ProcessingStopwatch.start("reporting/file size/correlations");
             correlationDiagramGenerator.addCorrelations("File Size vs. Commits (all time)", "commits (all time)", "lines of code",
-                    p -> p.getCommits().size(),
+                    p -> p.getCommitsCount(),
                     p -> linesOfCodeMap.getOrDefault(p.getPath(), 0),
                     p -> p.getPath());
 
             correlationDiagramGenerator.addCorrelations("File Size vs. Contributors (all time)", "contributors (all time)", "lines of code",
-                    p -> p.countContributors(),
+                    p -> p.getContributorsCount(),
                     p -> linesOfCodeMap.getOrDefault(p.getPath(), 0),
                     p -> p.getPath());
 
@@ -108,7 +108,7 @@ public class FileSizeReportGenerator {
             report.addHorizontalLine();
 
             correlationDiagramGenerator.addCorrelations("File Size vs. Commits (30 days)", "commits (30d)", "lines of code",
-                    p -> p.getCommits().stream().filter(c -> DateUtils.isDateWithinRange(c.getDate(), 30)).count(),
+                    p -> p.getCommitsCount30Days(),
                     p -> linesOfCodeMap.getOrDefault(p.getPath(), 0),
                     p -> p.getPath());
 
@@ -120,7 +120,7 @@ public class FileSizeReportGenerator {
             report.addHorizontalLine();
 
             correlationDiagramGenerator.addCorrelations("File Size vs. Commits (90 days)", "commits (90d)", "lines of code",
-                    p -> p.getCommits().stream().filter(c -> DateUtils.isDateWithinRange(c.getDate(), 90)).count(),
+                    p -> p.getCommitsCount90Days(),
                     p -> linesOfCodeMap.getOrDefault(p.getPath(), 0),
                     p -> p.getPath());
 
@@ -137,10 +137,7 @@ public class FileSizeReportGenerator {
     }
 
     private long countContributors(FileModificationHistory p, int rangeInDays) {
-        Stream<CommitInfo> commitInfoStream = p.getCommits().stream().filter(c -> DateUtils.isDateWithinRange(c.getDate(), rangeInDays));
-        Set<String> contributorIds = new HashSet<>();
-        commitInfoStream.forEach(commit -> contributorIds.add(commit.getEmail()));
-        return contributorIds.size();
+        return rangeInDays <= 30 ? p.getContributorsCount30Days() : p.getContributorsCount90Days();
     }
 
     private void addGraphOverall(RichTextReport report, SourceFileSizeDistribution distribution) {

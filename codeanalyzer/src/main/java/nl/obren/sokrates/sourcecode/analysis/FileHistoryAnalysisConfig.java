@@ -14,6 +14,7 @@ import nl.obren.sokrates.sourcecode.filehistory.FileModificationHistory;
 import nl.obren.sokrates.sourcecode.filehistory.GitHistoryUtil;
 import nl.obren.sokrates.sourcecode.githistory.AuthorCommit;
 import nl.obren.sokrates.sourcecode.githistory.CommitsPerExtension;
+import nl.obren.sokrates.sourcecode.githistory.GitHistoryIndex;
 import nl.obren.sokrates.sourcecode.githistory.GitHistoryUtils;
 import nl.obren.sokrates.sourcecode.operations.OperationStatement;
 import org.apache.commons.lang3.StringUtils;
@@ -55,7 +56,7 @@ public class FileHistoryAnalysisConfig {
 
     @JsonIgnore
     public List<FileModificationHistory> getHistory(File sokratesConfigFolder) {
-        return new GitHistoryUtil().importGitLsFilesExport(getFilesHistoryFile(sokratesConfigFolder), this);
+        return GitHistoryIndex.open(getFilesHistoryFile(sokratesConfigFolder), this).loadFileHistorySummaries(null);
     }
 
     @JsonIgnore
@@ -65,7 +66,7 @@ public class FileHistoryAnalysisConfig {
         }
 
         return getFilesHistoryFile(sokratesConfigFolder).exists()
-                && getHistory(sokratesConfigFolder).size() > 0;
+                && GitHistoryIndex.open(getFilesHistoryFile(sokratesConfigFolder), this).hasHistory();
     }
 
     @JsonIgnore
@@ -76,7 +77,7 @@ public class FileHistoryAnalysisConfig {
     @JsonIgnore
     public ContributorsImport getContributors(File sokratesConfigFolder, FileHistoryAnalysisConfig config) {
         ProcessingStopwatch.start("analysis/contributors/loading/import");
-        ContributorsImport contributorsImport = GitContributorsUtil.importGitContributorsExport(getContributorsFile(sokratesConfigFolder), config);
+        ContributorsImport contributorsImport = GitHistoryIndex.open(getContributorsFile(sokratesConfigFolder), config).loadContributorsImport();
         ProcessingStopwatch.end("analysis/contributors/loading/import");
         ProcessingStopwatch.start("analysis/contributors/loading/ignore filtering");
         List<Contributor> contributors = contributorsImport.getContributors()
@@ -90,7 +91,7 @@ public class FileHistoryAnalysisConfig {
 
     @JsonIgnore
     public List<CommitsPerExtension> getCommitsPerExtension(File sokratesConfigFolder, FileHistoryAnalysisConfig config) {
-        return GitContributorsUtil.getCommitsPerExtension(getContributorsFile(sokratesConfigFolder), config);
+        return GitHistoryIndex.open(getContributorsFile(sokratesConfigFolder), config).loadCommitsPerExtensions();
     }
 
     public List<String> getIgnoreContributors() {

@@ -47,6 +47,11 @@ public class ContributorConnectionUtils {
     public static List<ComponentDependency> getPeopleDependencies(CodeAnalysisResults codeAnalysisResults, int daysAgo) {
         String processingName = "analysis/contributors/get people dependencies/" + daysAgo + " days";
         ProcessingStopwatch.start(processingName);
+        if (codeAnalysisResults.getHistoryIndex() != null) {
+            List<ComponentDependency> dependencies = codeAnalysisResults.getHistoryIndex().loadPeopleDependencies(daysAgo, MAX_PEOPLE_DEPENDENCIES_SIZE);
+            ProcessingStopwatch.end(processingName);
+            return dependencies;
+        }
         Map<String, List<String>> contributionMap = new HashMap<>();
 
         codeAnalysisResults.getFilesHistoryAnalysisResults().getHistory(Integer.MAX_VALUE).forEach(fileModificationHistory -> {
@@ -109,6 +114,11 @@ public class ContributorConnectionUtils {
     public static List<ComponentDependency> getPeopleFileDependencies(CodeAnalysisResults codeAnalysisResults, int daysAgo) {
         String processingName = "analysis/contributors/get people file dependencies/" + daysAgo + " days";
         ProcessingStopwatch.start(processingName);
+        if (codeAnalysisResults.getHistoryIndex() != null) {
+            List<ComponentDependency> dependencies = codeAnalysisResults.getHistoryIndex().loadPeopleFileDependencies(daysAgo, MAX_PEOPLE_DEPENDENCIES_SIZE);
+            ProcessingStopwatch.end(processingName);
+            return dependencies;
+        }
         List<ComponentDependency> dependencies = new ArrayList<>();
         Map<String, ComponentDependency> dependenciesMap = new HashMap<>();
 

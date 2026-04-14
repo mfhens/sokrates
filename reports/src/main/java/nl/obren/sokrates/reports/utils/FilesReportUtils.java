@@ -77,8 +77,8 @@ public class FilesReportUtils {
                 if (history != null) {
                     table.append("<td style='text-align: center; white-space: nowrap; font-size: 80%'>" + history.getOldestDate() + "</td>\n");
                     table.append("<td style='text-align: center; white-space: nowrap; font-size: 80%;'>" + history.getLatestDate() + "</td>\n");
-                    table.append("<td style='text-align: center'>" + history.getDates().size() + "</td>\n");
-                    table.append("<td style='text-align: center'>" + history.countContributors() + "</td>\n");
+                    table.append("<td style='text-align: center'>" + history.getActiveDaysCount() + "</td>\n");
+                    table.append("<td style='text-align: center'>" + history.getContributorsCount() + "</td>\n");
                     table.append("<td style='text-align: center; font-size: 80%; color: grey'>" + StringUtils.abbreviate(history.getOldestContributor(), 30) + "</td>\n");
                     table.append("<td style='text-align: center; font-size: 80%; color: grey'>" + StringUtils.abbreviate(history.getLatestContributor(), 30) + "</td>\n");
                 } else {

@@ -12,6 +12,7 @@ import nl.obren.sokrates.sourcecode.analysis.results.FilesHistoryAnalysisResults
 import nl.obren.sokrates.sourcecode.aspects.LogicalDecomposition;
 import nl.obren.sokrates.sourcecode.core.CodeConfiguration;
 import nl.obren.sokrates.sourcecode.filehistory.*;
+import nl.obren.sokrates.sourcecode.githistory.GitHistoryIndex;
 import nl.obren.sokrates.sourcecode.metrics.MetricsList;
 import nl.obren.sokrates.sourcecode.stats.SourceFileAgeDistribution;
 import nl.obren.sokrates.sourcecode.stats.SourceFileChangeDistribution;
@@ -43,12 +44,24 @@ public class FileHistoryAnalyzer extends Analyzer {
 
     public void analyze() {
         if (codeConfiguration.getFileHistoryAnalysis().filesHistoryImportPathExists(sokratesFolder)) {
-
-            List<FileModificationHistory> history = codeConfiguration.getFileHistoryAnalysis().getHistory(sokratesFolder);
+            GitHistoryIndex historyIndex = GitHistoryIndex.open(
+                    codeConfiguration.getFileHistoryAnalysis().getFilesHistoryFile(sokratesFolder),
+                    codeConfiguration.getFileHistoryAnalysis()
+            );
+            List<FileModificationHistory> history = historyIndex.loadFileHistorySummaries(
+                    codeConfiguration.getMain().getSourceFiles().stream().map(SourceFile::getRelativePath).toList());
+            analysisResults.setHistoryPerExtensionPerYear(historyIndex.loadHistoryPerExtensionPerYear());
             analysisResults.setHistory(history);
+            analysisResults.setHistoryIndexed(historyIndex.hasHistory());
+            analysisResults.setHistorySource("sqlite");
+            codeConfiguration.getMain().getSourceFiles().forEach(sourceFile -> sourceFile.setFileModificationHistory(null));
 
             if (history.size() > 0) {
+                analysisResults.setAllFiles(codeConfiguration.getMain().getSourceFiles());
                 summarize(history);
+                analysisResults.setHistoryIndexed(true);
+                analysisResults.setHistorySource(historyIndex.getDbFile().getName());
+                analysisResults.setHistoryFileCount(history.size());
 
                 LOG.info("Enriching files with age...");
                 enrichFilesWithAge(history);
@@ -57,19 +70,23 @@ public class FileHistoryAnalyzer extends Analyzer {
                 int maxDays = codeConfiguration.getAnalysis().getMaxTemporalDependenciesDepthDays();
                 if (maxDays > 180) {
                     LOG.info("Analyzing files changed together (all time=" + maxDays + " days)...");
-                    analyzeFilesChangedTogether(history);
+                    analyzeFilesChangedTogether(historyIndex);
                 }
-                if (maxDays >= 30) {
+                if (maxDays < 90 && maxDays >= 30) {
                     LOG.info("Analyzing files changed together in past 30 days...");
-                    analyzeFilesChangedTogether30Days(history);
+                    analyzeFilesChangedTogether30Days(historyIndex);
                 }
                 if (maxDays >= 90) {
                     LOG.info("Analyzing files changed together in past 90 days...");
-                    analyzeFilesChangedTogether90Days(history);
+                    analyzeFilesChangedTogether90Days(historyIndex);
                 }
                 if (maxDays >= 180) {
                     LOG.info("Analyzing files changed together in past 180 days...");
-                    analyzeFilesChangedTogether180Days(history);
+                    analyzeFilesChangedTogether180Days(historyIndex);
+                }
+                if (maxDays >= 365) {
+                    LOG.info("Analyzing files changed together in past 365 days...");
+                    analyzeFilesChangedTogether365Days(historyIndex);
                 }
             }
         }
@@ -121,28 +138,44 @@ public class FileHistoryAnalyzer extends Analyzer {
         }
     }
 
-    private void analyzeFilesChangedTogether(List<FileModificationHistory> history) {
-        FilePairsChangedTogether filePairsChangedTogether = new FilePairsChangedTogether(codeConfiguration.getAnalysis().getMaxTemporalDependenciesDepthDays());
-        filePairsChangedTogether.populate(codeConfiguration.getMain(), history);
-        analysisResults.setFilePairsChangedTogether(filePairsChangedTogether.getFilePairsList());
+    private void analyzeFilesChangedTogether(GitHistoryIndex historyIndex) {
+        analysisResults.setFilePairsChangedTogether(historyIndex.loadFilePairs(
+                codeConfiguration.getMain().getSourceFiles(),
+                codeConfiguration.getAnalysis().getMaxTemporalDependenciesDepthDays(),
+                codeConfiguration.getAnalysis().getCommitFilesCountThresholds(),
+                codeConfiguration.getAnalysis().getMaxTopListSize() * 20));
     }
 
-    private void analyzeFilesChangedTogether30Days(List<FileModificationHistory> history) {
-        FilePairsChangedTogether filePairsChangedTogether = new FilePairsChangedTogether(30);
-        filePairsChangedTogether.populate(codeConfiguration.getMain(), history);
-        analysisResults.setFilePairsChangedTogether30Days(filePairsChangedTogether.getFilePairsList());
+    private void analyzeFilesChangedTogether90Days(GitHistoryIndex historyIndex) {
+        analysisResults.setFilePairsChangedTogether90Days(historyIndex.loadFilePairs(
+                codeConfiguration.getMain().getSourceFiles(),
+                90,
+                codeConfiguration.getAnalysis().getCommitFilesCountThresholds(),
+                codeConfiguration.getAnalysis().getMaxTopListSize() * 20));
     }
 
-    private void analyzeFilesChangedTogether90Days(List<FileModificationHistory> history) {
-        FilePairsChangedTogether filePairsChangedTogether = new FilePairsChangedTogether(90);
-        filePairsChangedTogether.populate(codeConfiguration.getMain(), history);
-        analysisResults.setFilePairsChangedTogether90Days(filePairsChangedTogether.getFilePairsList());
+    private void analyzeFilesChangedTogether30Days(GitHistoryIndex historyIndex) {
+        analysisResults.setFilePairsChangedTogether30Days(historyIndex.loadFilePairs(
+                codeConfiguration.getMain().getSourceFiles(),
+                30,
+                codeConfiguration.getAnalysis().getCommitFilesCountThresholds(),
+                codeConfiguration.getAnalysis().getMaxTopListSize() * 20));
     }
 
-    private void analyzeFilesChangedTogether180Days(List<FileModificationHistory> history) {
-        FilePairsChangedTogether filePairsChangedTogether = new FilePairsChangedTogether(180);
-        filePairsChangedTogether.populate(codeConfiguration.getMain(), history);
-        analysisResults.setFilePairsChangedTogether180Days(filePairsChangedTogether.getFilePairsList());
+    private void analyzeFilesChangedTogether180Days(GitHistoryIndex historyIndex) {
+        analysisResults.setFilePairsChangedTogether180Days(historyIndex.loadFilePairs(
+                codeConfiguration.getMain().getSourceFiles(),
+                180,
+                codeConfiguration.getAnalysis().getCommitFilesCountThresholds(),
+                codeConfiguration.getAnalysis().getMaxTopListSize() * 20));
+    }
+
+    private void analyzeFilesChangedTogether365Days(GitHistoryIndex historyIndex) {
+        analysisResults.setFilePairsChangedTogether365Days(historyIndex.loadFilePairs(
+                codeConfiguration.getMain().getSourceFiles(),
+                365,
+                codeConfiguration.getAnalysis().getCommitFilesCountThresholds(),
+                codeConfiguration.getAnalysis().getMaxTopListSize() * 20));
     }
 
     private void analyzeFilesAge() {
@@ -222,10 +255,12 @@ public class FileHistoryAnalyzer extends Analyzer {
     }
 
     private void enrichFilesWithAge(List<FileModificationHistory> ages) {
+        Map<String, FileModificationHistory> agesByPath = new HashMap<>();
+        ages.forEach(history -> agesByPath.put(history.getPath().toLowerCase(), history));
         codeConfiguration.getMain().getSourceFiles().forEach(sourceFile -> {
-            Optional<FileModificationHistory> any = ages.stream().filter(f -> f.getPath().equalsIgnoreCase(sourceFile.getRelativePath())).findAny();
-            if (any.isPresent()) {
-                sourceFile.setFileModificationHistory(any.get());
+            FileModificationHistory history = agesByPath.get(sourceFile.getRelativePath().toLowerCase());
+            if (history != null) {
+                sourceFile.setFileModificationHistory(history);
             }
         });
     }
@@ -312,7 +347,7 @@ public class FileHistoryAnalyzer extends Analyzer {
     private void addMostChangedFiles(List<SourceFile> sourceFiles, FilesHistoryAnalysisResults filesHistoryAnalysisResults, int sampleSize) {
         List<SourceFile> files = new ArrayList<>(sourceFiles);
         Collections.sort(files, (o1, o2) -> Integer.compare(o2.getLinesOfCode(), o1.getLinesOfCode()));
-        Collections.sort(files, Comparator.comparingInt(o -> (o.getFileModificationHistory() == null ? 0 : o.getFileModificationHistory().getDates().size())));
+        Collections.sort(files, Comparator.comparingInt(o -> (o.getFileModificationHistory() == null ? 0 : o.getFileModificationHistory().getActiveDaysCount())));
         Collections.reverse(files);
         int index[] = {0};
         files.forEach(sourceFile -> {
@@ -325,7 +360,7 @@ public class FileHistoryAnalyzer extends Analyzer {
 
     private void addFilesWithMostContributors(List<SourceFile> sourceFiles, FilesHistoryAnalysisResults filesHistoryAnalysisResults, int sampleSize) {
         List<SourceFile> files = new ArrayList<>(sourceFiles);
-        Collections.sort(files, Comparator.comparingInt(o -> (o.getFileModificationHistory() == null ? 0 : -o.getFileModificationHistory().getDates().size())));
+        Collections.sort(files, Comparator.comparingInt(o -> (o.getFileModificationHistory() == null ? 0 : -o.getFileModificationHistory().getActiveDaysCount())));
         Collections.sort(files, (o1, o2) -> getCountContributors(o2) - getCountContributors(o1));
         int index[] = {0};
         files.forEach(sourceFile -> {
@@ -350,6 +385,6 @@ public class FileHistoryAnalyzer extends Analyzer {
     }
 
     private int getCountContributors(SourceFile sourceFile) {
-        return sourceFile.getFileModificationHistory() != null ? sourceFile.getFileModificationHistory().countContributors() : 0;
+        return sourceFile.getFileModificationHistory() != null ? sourceFile.getFileModificationHistory().getContributorsCount() : 0;
     }
 }

@@ -59,6 +59,9 @@ public class Commands {
     public static final String ARG_PATTERN = "pattern";
     public static final String ARG_DEST_FOLDER = "destFolder";
     public static final String ARG_DEST_PARENT = "destParent";
+    public static final String ARG_GIT_HISTORY_MODE = "mode";
+    public static final String ARG_GIT_HISTORY_INCREMENTAL = "incremental";
+    public static final String ARG_GIT_HISTORY_CHECKPOINT = "checkpointFile";
     public static final String ARG_HELP = "help";
 
     public static final String ARG_SKIP_DUPLICATION_ANALYSES = "skipDuplication";
@@ -89,6 +92,9 @@ public class Commands {
     private Option pattern = new Option(ARG_PATTERN, true, "the file path regex pattern");
     private Option destRoot = new Option(ARG_DEST_FOLDER, true, "the destination folder");
     private Option destParent = new Option(ARG_DEST_PARENT, true, "[OPTIONAL] the destination parent folder");
+    private Option gitHistoryMode = new Option(ARG_GIT_HISTORY_MODE, true, "[OPTIONAL] git history extraction mode: compatibility (JGit) or large-repo (native git, merge-skipping, buffered output)");
+    private Option gitHistoryIncremental = new Option(ARG_GIT_HISTORY_INCREMENTAL, false, "[OPTIONAL] appends only commits newer than the checkpoint when used with -mode large-repo");
+    private Option gitHistoryCheckpoint = new Option(ARG_GIT_HISTORY_CHECKPOINT, true, "[OPTIONAL] checkpoint file used by -incremental (default <analysisRoot>/git-history.checkpoint)");
     private Option internalGraphviz = new Option(ARG_USE_INTERNAL_GRAPHVIZ, false, "[OPTIONAL] use internal Graphviz library (by default external dot program is used, you may specify the external dot path via the system variable GRAPHVIZ_DOT)");
 
     private Option outputFolder = new Option(ARG_OUTPUT_FOLDER, true, "[OPTIONAL] the folder where reports will be stored (default value is <currentFolder/_sokrates/reports>)");
@@ -245,6 +251,9 @@ public class Commands {
     public Options getExtractGitHistoryOption() {
         Options options = new Options();
         options.addOption(analysisRoot);
+        options.addOption(gitHistoryMode);
+        options.addOption(gitHistoryIncremental);
+        options.addOption(gitHistoryCheckpoint);
         options.addOption(help);
 
         analysisRoot.setRequired(false);
@@ -389,5 +398,17 @@ public class Commands {
 
     public Option getRecursive() {
         return recursive;
+    }
+
+    public Option getGitHistoryMode() {
+        return gitHistoryMode;
+    }
+
+    public Option getGitHistoryIncremental() {
+        return gitHistoryIncremental;
+    }
+
+    public Option getGitHistoryCheckpoint() {
+        return gitHistoryCheckpoint;
     }
 }

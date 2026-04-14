@@ -40,11 +40,6 @@ public class GitHistoryUtil {
         CommitInfo commitInfo = new CommitInfo(fileUpdate.getCommitId(), fileUpdate.getDate());
         String authorEmail = fileUpdate.getAuthorEmail();
         commitInfo.setEmail(authorEmail);
-        fileInfo.getCommits().add(commitInfo);
-
-        String lastModifiedDate = fileUpdate.getDate();
-        if (!fileInfo.getDates().contains(lastModifiedDate)) {
-            fileInfo.getDates().add(lastModifiedDate);
-        }
+        fileInfo.registerCommit(commitInfo);
     }
 }

@@ -37,16 +37,22 @@ public class FileTemporalDependenciesReportGenerator {
                 "at the same time (i.e. they are a part of the same commit).", "margin-top: 12px; color: grey");
 
         int maxTemporalDependenciesDepthDays = codeAnalysisResults.getCodeConfiguration().getAnalysis().getMaxTemporalDependenciesDepthDays();
+        boolean show30DayTab = maxTemporalDependenciesDepthDays < 90;
 
         report.startTabGroup();
-        report.addTab("30_days", "Past 30 Days", true);
+        if (show30DayTab) {
+            report.addTab("30_days", "Past 30 Days", true);
+        }
         if (maxTemporalDependenciesDepthDays >= 90) {
-            report.addTab("90_days", "Past 3 Months", false);
+            report.addTab("90_days", "Past 90 Days", !show30DayTab);
         }
         if (maxTemporalDependenciesDepthDays >= 180) {
-            report.addTab("180_days", "Past 6 Months", false);
+            report.addTab("180_days", "Past 180 Days", false);
         }
-        if (maxTemporalDependenciesDepthDays > 180) {
+        if (maxTemporalDependenciesDepthDays >= 365) {
+            report.addTab("365_days", "Past 365 Days", false);
+        }
+        if (maxTemporalDependenciesDepthDays > 365) {
             report.addTab("all_time", "Past " + maxTemporalDependenciesDepthDays + " Days", false);
         }
         report.endTabGroup();
@@ -55,23 +61,29 @@ public class FileTemporalDependenciesReportGenerator {
         List<FilePairChangedTogether> filePairsChangedTogether30Days = codeAnalysisResults.getFilesHistoryAnalysisResults().getFilePairsChangedTogether30Days();
         List<FilePairChangedTogether> filePairsChangedTogether90Days = codeAnalysisResults.getFilesHistoryAnalysisResults().getFilePairsChangedTogether90Days();
         List<FilePairChangedTogether> filePairsChangedTogether180Days = codeAnalysisResults.getFilesHistoryAnalysisResults().getFilePairsChangedTogether180Days();
+        List<FilePairChangedTogether> filePairsChangedTogether365Days = codeAnalysisResults.getFilesHistoryAnalysisResults().getFilePairsChangedTogether365Days();
 
-        addTabContentSection(report, "30_days", filePairsChangedTogether30Days, true);
+        if (show30DayTab) {
+            addTabContentSection(report, "30_days", filePairsChangedTogether30Days, true, 30);
+        }
         if (maxTemporalDependenciesDepthDays >= 90) {
-            addTabContentSection(report, "90_days", filePairsChangedTogether90Days, false);
+            addTabContentSection(report, "90_days", filePairsChangedTogether90Days, !show30DayTab, 90);
         }
         if (maxTemporalDependenciesDepthDays >= 180) {
-            addTabContentSection(report, "180_days", filePairsChangedTogether180Days, false);
+            addTabContentSection(report, "180_days", filePairsChangedTogether180Days, false, 180);
         }
-        if (maxTemporalDependenciesDepthDays > 180) {
-            addTabContentSection(report, "all_time", filePairsChangedTogether, false);
+        if (maxTemporalDependenciesDepthDays >= 365) {
+            addTabContentSection(report, "365_days", filePairsChangedTogether365Days, false, 365);
+        }
+        if (maxTemporalDependenciesDepthDays > 365) {
+            addTabContentSection(report, "all_time", filePairsChangedTogether, false, maxTemporalDependenciesDepthDays);
         }
     }
 
-    private void addTabContentSection(RichTextReport report, String id, List<FilePairChangedTogether> filePairs, boolean active) {
+    private void addTabContentSection(RichTextReport report, String id, List<FilePairChangedTogether> filePairs, boolean active, int rangeInDays) {
         report.startTabContentSection(id, active);
         addFileChangedTogetherList(report, filePairs);
-        addDependenciesSection(report, filePairs, id);
+        addDependenciesSection(report, filePairs, id, rangeInDays);
         report.endTabContentSection();
 
     }
@@ -87,7 +99,7 @@ public class FileTemporalDependenciesReportGenerator {
         }
         report.addLineBreak();
         report.startSubSection("Files Most Frequently Changed Together (Top " + filePairs.size() + ")", "");
-        report.addParagraph("<a href='../data/text/temporal_dependencies.txt' target='_blank'>data...</a>");
+        report.addParagraph("Normalized coupling highlights recent shared-change hotspots. <a href='../data/text/temporal_dependencies.txt' target='_blank'>data...</a>");
         addTable(report, filePairs);
         report.endSection();
     }
@@ -106,14 +118,15 @@ public class FileTemporalDependenciesReportGenerator {
     private void addTable(RichTextReport report, List<FilePairChangedTogether> filePairs) {
         report.startDiv("max-height: 400px; overflow-y: auto");
         report.startTable();
-        report.addTableHeader("Pairs", "# same commits", "# commits 1", "# commits 2", "latest commit");
+        report.addTableHeader("Pairs", "# same commits", "score", "# commits 1", "# commits 2", "latest commit");
         filePairs.forEach(filePair -> {
             report.startTableRow();
 
             report.addTableCell(filePair.getSourceFile1().getRelativePath() + "<br/>" + filePair.getSourceFile2().getRelativePath());
 
-            int commitsCount = filePair.getCommits().size();
+            int commitsCount = filePair.getSharedCommitsCount();
             report.addTableCell("" + commitsCount, "text-align: center");
+            report.addTableCell(FormattingUtils.getFormattedPercentage(100.0 * filePair.getNormalizedScore()) + "%", "text-align: center");
             int commitsCountFile1 = filePair.getCommitsCountFile1();
             report.addTableCell("" + commitsCountFile1 +
                     (commitsCountFile1 > 0 && commitsCountFile1 >= commitsCount
@@ -132,7 +145,7 @@ public class FileTemporalDependenciesReportGenerator {
         report.endDiv();
     }
 
-    private void addDependenciesSection(RichTextReport report, List<FilePairChangedTogether> filePairsChangedTogether, String id) {
+    private void addDependenciesSection(RichTextReport report, List<FilePairChangedTogether> filePairsChangedTogether, String id, int rangeInDays) {
         report.startDiv("margin: 10px;");
 
         report.startSubSection("Dependencies between files in same commits", "The number on the lines shows the number of shared commits.");
@@ -149,8 +162,14 @@ public class FileTemporalDependenciesReportGenerator {
             report.startSubSection("Dependencies between components in same commits (" + logicalDecompositionKey + ")",
                     "The number on the lines shows the number of shared commits.");
 
-            TemporalDependenciesHelper helper = new TemporalDependenciesHelper();
-            List<ComponentDependency> componentDependencies = helper.extractComponentDependencies(logicalDecompositionKey, filePairsChangedTogether);
+            List<ComponentDependency> componentDependencies = codeAnalysisResults.getHistoryIndex() != null
+                    ? codeAnalysisResults.getHistoryIndex().loadComponentDependencies(
+                    codeAnalysisResults.getFilesHistoryAnalysisResults().getAllFiles(),
+                    logicalDecompositionKey,
+                    rangeInDays,
+                    codeAnalysisResults.getCodeConfiguration().getAnalysis().getCommitFilesCountThresholds(),
+                    codeAnalysisResults.getCodeConfiguration().getAnalysis().getMaxTopListSize() * 20)
+                    : new TemporalDependenciesHelper().extractComponentDependencies(logicalDecompositionKey, filePairsChangedTogether);
             renderComponentDependencies(report, componentDependencies, "logical_decomposition_" + index[0] + "_" + id);
 
             report.endSection();

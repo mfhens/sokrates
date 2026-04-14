@@ -3,7 +3,6 @@ package nl.obren.sokrates.reports.generators.statichtml;
 import nl.obren.sokrates.sourcecode.SourceFile;
 import nl.obren.sokrates.sourcecode.analysis.results.CodeAnalysisResults;
 import nl.obren.sokrates.sourcecode.aspects.NamedSourceCodeAspect;
-import nl.obren.sokrates.sourcecode.filehistory.DateUtils;
 import nl.obren.sokrates.sourcecode.metrics.NumericMetric;
 
 import java.util.*;
@@ -16,8 +15,11 @@ public class CommitTrendsExtractors {
     }
 
     public Map<String, Map<String, Integer>> getCommitsPerYear(String logicalDecompositionKey) {
-        Map<String, Map<String, Integer>> componentsMap = new HashMap<>();
         List<SourceFile> allFiles = analysisResults.getFilesHistoryAnalysisResults().getAllFiles();
+        if (analysisResults.getHistoryIndex() != null) {
+            return analysisResults.getHistoryIndex().loadComponentCommitCountsByYear(allFiles, logicalDecompositionKey);
+        }
+        Map<String, Map<String, Integer>> componentsMap = new HashMap<>();
         allFiles.stream().filter(item -> item.getFileModificationHistory() != null).forEach(item -> {
             List<NamedSourceCodeAspect> logicalComponents = item.getLogicalComponents(logicalDecompositionKey);
             if (logicalComponents.size() > 0) {
@@ -31,8 +33,8 @@ public class CommitTrendsExtractors {
                     componentsMap.put(componentName, componentYears);
                 }
                 item.getFileModificationHistory().getCommits().forEach(commit -> {
-                    String year = DateUtils.getYear(commit.getDate());
-                    int prevValue = componentYears.containsKey(year) ? componentYears.get(year) : 0;
+                    String year = commit.getDate().substring(0, 4);
+                    int prevValue = componentYears.getOrDefault(year, 0);
                     componentYears.put(year, prevValue + 1);
                 });
             }
@@ -42,26 +44,24 @@ public class CommitTrendsExtractors {
     }
 
     public List<NumericMetric> getTotalCommits(String logicalDecompositionKey) {
-        Map<String, Set<String>> commitsMap = new HashMap<>();
         List<SourceFile> allFiles = analysisResults.getFilesHistoryAnalysisResults().getAllFiles();
+        Map<String, Integer> commitsMap = analysisResults.getHistoryIndex() != null
+                ? analysisResults.getHistoryIndex().loadComponentCommitCounts(allFiles, logicalDecompositionKey)
+                : new HashMap<>();
+        if (analysisResults.getHistoryIndex() == null) {
         allFiles.stream().filter(item -> item.getFileModificationHistory() != null).forEach(item -> {
             List<NamedSourceCodeAspect> logicalComponents = item.getLogicalComponents(logicalDecompositionKey);
             if (logicalComponents.size() > 0) {
                 String component = logicalComponents.get(0).getName();
-
-                item.getFileModificationHistory().getCommits().forEach(commit -> {
-                    if (!commitsMap.containsKey(component)) {
-                        commitsMap.put(component, new HashSet<>());
-                    }
-                    commitsMap.get(component).add(commit.getId());
-                });
+                commitsMap.put(component, commitsMap.getOrDefault(component, 0) + item.getFileModificationHistory().getCommitsCount());
             }
         });
+        }
 
         List<NumericMetric> metrics = new ArrayList<>();
 
         commitsMap.keySet().forEach(key -> {
-            metrics.add(new NumericMetric(key, commitsMap.get(key).size()));
+            metrics.add(new NumericMetric(key, commitsMap.get(key)));
         });
 
         return metrics;

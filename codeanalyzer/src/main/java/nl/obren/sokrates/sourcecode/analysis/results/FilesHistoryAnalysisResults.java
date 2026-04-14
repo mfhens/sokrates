@@ -39,6 +39,8 @@ public class FilesHistoryAnalysisResults {
     private List<FilePairChangedTogether> filePairsChangedTogether90Days = new ArrayList<>();
     @JsonIgnore
     private List<FilePairChangedTogether> filePairsChangedTogether180Days = new ArrayList<>();
+    @JsonIgnore
+    private List<FilePairChangedTogether> filePairsChangedTogether365Days = new ArrayList<>();
 
     private List<FileAgeDistributionPerLogicalDecomposition> changeDistributionPerLogicalDecomposition = new ArrayList<>();
     private List<FileAgeDistributionPerLogicalDecomposition> firstModifiedDistributionPerLogicalDecomposition = new ArrayList<>();
@@ -64,6 +66,9 @@ public class FilesHistoryAnalysisResults {
     private int estimatedWorkindDays;
     private int activeDays;
     private int ageInDays;
+    private boolean historyIndexed;
+    private String historySource = "";
+    private int historyFileCount;
 
     private List<HistoryPerExtension> historyPerExtensionPerYear = null;
 
@@ -240,6 +245,16 @@ public class FilesHistoryAnalysisResults {
     }
 
     @JsonIgnore
+    public List<FilePairChangedTogether> getFilePairsChangedTogether365Days() {
+        return filePairsChangedTogether365Days;
+    }
+
+    @JsonIgnore
+    public void setFilePairsChangedTogether365Days(List<FilePairChangedTogether> filePairsChangedTogether365Days) {
+        this.filePairsChangedTogether365Days = filePairsChangedTogether365Days;
+    }
+
+    @JsonIgnore
     public List<FilePairChangedTogether> getFilePairsChangedTogetherInDifferentFolders(List<FilePairChangedTogether> pairs) {
         return pairs.stream().filter(p -> {
             File folder1 = new File(p.getSourceFile1().getRelativePath()).getParentFile();
@@ -354,6 +369,30 @@ public class FilesHistoryAnalysisResults {
 
     public void setAgeInDays(int ageInDays) {
         this.ageInDays = ageInDays;
+    }
+
+    public boolean isHistoryIndexed() {
+        return historyIndexed;
+    }
+
+    public void setHistoryIndexed(boolean historyIndexed) {
+        this.historyIndexed = historyIndexed;
+    }
+
+    public String getHistorySource() {
+        return historySource;
+    }
+
+    public void setHistorySource(String historySource) {
+        this.historySource = historySource;
+    }
+
+    public int getHistoryFileCount() {
+        return historyFileCount;
+    }
+
+    public void setHistoryFileCount(int historyFileCount) {
+        this.historyFileCount = historyFileCount;
     }
 
     public List<SourceFile> getFilesWithMostContributors() {

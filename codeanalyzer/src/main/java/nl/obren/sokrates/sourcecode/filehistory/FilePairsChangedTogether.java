@@ -50,7 +50,7 @@ public class FilePairsChangedTogether {
         });
 
         filePairsList = new ArrayList<>(filePairs);
-        Collections.sort(filePairsList, (a, b) -> b.getCommits().size() - a.getCommits().size());
+        Collections.sort(filePairsList, (a, b) -> Integer.compare(b.getSharedCommitsCount(), a.getSharedCommitsCount()));
     }
 
     private void addFilePair(NamedSourceCodeAspect aspect, FileModificationHistory fileHistory1, FileModificationHistory fileHistory2, String commitId, String date) {
@@ -72,14 +72,15 @@ public class FilePairsChangedTogether {
             if (filePairChangedTogether == null) {
                 filePairChangedTogether = new FilePairChangedTogether(sourceFile1, sourceFile2);
 
-                filePairChangedTogether.setCommitsCountFile1(fileHistory1.getCommits().size());
-                filePairChangedTogether.setCommitsCountFile2(fileHistory2.getCommits().size());
+                filePairChangedTogether.setCommitsCountFile1(fileHistory1.getCommitsCount());
+                filePairChangedTogether.setCommitsCountFile2(fileHistory2.getCommitsCount());
 
                 filePairsMap.put(key1, filePairChangedTogether);
                 filePairs.add(filePairChangedTogether);
             }
 
             filePairChangedTogether.getCommits().add(commitId);
+            filePairChangedTogether.setSharedCommitsCount(filePairChangedTogether.getCommits().size());
 
             if (shouldUpdateLatestDate(date, filePairChangedTogether)) {
                 filePairChangedTogether.setLatestCommit(date);

@@ -58,19 +58,13 @@ public class FileAgeReportGenerator {
     }
 
     private void addSummary(RichTextReport report) {
-        FileHistoryComponentsHelper helper = new FileHistoryComponentsHelper();
+        FilesHistoryAnalysisResults results = codeAnalysisResults.getFilesHistoryAnalysisResults();
+        int historyCount = results.getHistoryFileCount() > 0 ? results.getHistoryFileCount() : results.getHistory(Integer.MAX_VALUE).size();
 
-        List<FileModificationHistory> history = codeAnalysisResults.getFilesHistoryAnalysisResults().getHistory(Integer.MAX_VALUE);
-        List<String> uniqueDates = helper.getUniqueDates(history);
-
-        if (uniqueDates.size() > 1) {
-            String firstDateString = uniqueDates.get(0);
-            String latestDateString = uniqueDates.get(uniqueDates.size() - 1);
-
-            Date firstDate = FileHistoryUtils.getDateFromString(firstDateString);
-            Date latestDate = FileHistoryUtils.getDateFromString(latestDateString);
-
-            this.daysBetween = FileHistoryUtils.daysBetween(firstDate, latestDate);
+        if (!results.getFirstDate().isBlank() && !results.getLatestDate().isBlank()) {
+            String firstDateString = results.getFirstDate();
+            String latestDateString = results.getLatestDate();
+            this.daysBetween = results.getDaysBetweenFirstAndLastDate();
 
             int weeks = daysBetween / 7;
             estimatedWorkingDays = weeks * 5;
@@ -80,11 +74,11 @@ public class FileAgeReportGenerator {
             report.startUnorderedList();
 
             report.addListItem("Number of files: <b>" + FormattingUtils.formatCount(codeAnalysisResults.getMainAspectAnalysisResults().getFilesCount()) + "</b>");
-            report.addListItem("Daily file updates (only one update per file and date counted): <b>" + history.size() + "</b>");
+            report.addListItem("Files with indexed commit history: <b>" + FormattingUtils.formatCount(historyCount) + "</b>");
             report.addListItem("First update: <b>" + firstDateString + "</b>");
             report.addListItem("Latest update: <b>" + latestDateString + "</b>");
             report.addListItem("Days between first and latest update: <b>" + FormattingUtils.formatCount(daysBetween) + "</b> (" + weeks + " weeks, estimated " + FormattingUtils.formatCount(estimatedWorkingDays) + " working days)");
-            report.addListItem("Active days (at least one file change): <b>" + FormattingUtils.formatCount(uniqueDates.size()) + "</b>");
+            report.addListItem("Active days (at least one file change): <b>" + FormattingUtils.formatCount(results.getActiveDays()) + "</b>");
             int ignoredFiles = codeAnalysisResults.getFilesHistoryAnalysisResults().getFilesWithoutCommitHistoryCount();
             if (ignoredFiles > 0) {
                 report.addListItem("Files without commit history (ignored): <b>" + FormattingUtils.formatCount(ignoredFiles) + " (" + FormattingUtils.formatCount(codeAnalysisResults.getFilesHistoryAnalysisResults().getFilesWithoutCommitHistoryLinesOfCode()) + " lines of code)</b>");

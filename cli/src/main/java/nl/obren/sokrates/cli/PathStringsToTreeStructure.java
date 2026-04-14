@@ -3,12 +3,10 @@ package nl.obren.sokrates.cli;
 import nl.obren.sokrates.common.renderingutils.VisualizationItem;
 import nl.obren.sokrates.common.renderingutils.charts.Palette;
 import nl.obren.sokrates.sourcecode.SourceFile;
-import nl.obren.sokrates.sourcecode.filehistory.CommitInfo;
-import nl.obren.sokrates.sourcecode.filehistory.DateUtils;
+import nl.obren.sokrates.sourcecode.filehistory.FileModificationHistory;
 import nl.obren.sokrates.sourcecode.threshold.Thresholds;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 public class PathStringsToTreeStructure {
     public static DirectoryNode createDirectoryTree(final List<SourceFile> list) {
@@ -157,7 +155,7 @@ class DirectoryNode {
         children.forEach(child -> {
             String name = child.value;
             int size = child.getSourceFile() != null && child.getSourceFile().getRelativePath().endsWith(name) && child.getSourceFile().getFileModificationHistory() != null
-                    ? (int) child.getSourceFile().getFileModificationHistory().getCommits().stream().filter(c -> DateUtils.isCommittedLessThanDaysAgo(c.getDate(), daysAgo)).count()
+                    ? getCommitCount(child.getSourceFile().getFileModificationHistory(), daysAgo)
                     : 0;
             VisualizationItem item = new VisualizationItem(name + (size > 0 ? " (" + size + ")" : ""), size);
             List<VisualizationItem> children = child.toVisualizationCommitItems(daysAgo);
@@ -180,10 +178,7 @@ class DirectoryNode {
             String name = child.value;
             int size;
             if (child.getSourceFile() != null && child.getSourceFile().getRelativePath().endsWith(name) && child.getSourceFile().getFileModificationHistory() != null) {
-                Stream<CommitInfo> commitInfoStream = child.getSourceFile().getFileModificationHistory().getCommits().stream().filter(c -> DateUtils.isCommittedLessThanDaysAgo(c.getDate(), daysAgo));
-                Set<String> emails = new HashSet<>();
-                commitInfoStream.forEach(commitInfo -> emails.add(commitInfo.getEmail()));
-                size = emails.size();
+                size = getContributorCount(child.getSourceFile().getFileModificationHistory(), daysAgo);
             } else {
                 size = 0;
             }
@@ -199,6 +194,38 @@ class DirectoryNode {
         });
 
         return items;
+    }
+
+    private int getCommitCount(FileModificationHistory history, int daysAgo) {
+        if (daysAgo <= 30) {
+            return history.getCommitsCount30Days();
+        }
+        if (daysAgo <= 90) {
+            return history.getCommitsCount90Days();
+        }
+        if (daysAgo <= 180) {
+            return history.getCommitsCount180Days();
+        }
+        if (daysAgo <= 365) {
+            return history.getCommitsCount365Days();
+        }
+        return history.getCommitsCount();
+    }
+
+    private int getContributorCount(FileModificationHistory history, int daysAgo) {
+        if (daysAgo <= 30) {
+            return history.getContributorsCount30Days();
+        }
+        if (daysAgo <= 90) {
+            return history.getContributorsCount90Days();
+        }
+        if (daysAgo <= 180) {
+            return history.getContributorsCount180Days();
+        }
+        if (daysAgo <= 365) {
+            return history.getContributorsCount365Days();
+        }
+        return history.getContributorsCount();
     }
 
     public List<VisualizationItem> toVisualizationRiskColoringItems(Thresholds thresholds, Palette palette, SourceFileValueExtractor colorValueExtractor, SourceFileValueExtractor sizeValueExtractor) {

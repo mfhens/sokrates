@@ -57,6 +57,7 @@ public class FileChurnReportGenerator {
         addGraphsPerExtension(report);
         addGraphsPerLogicalComponents(report);
         addMostChangedFilesList(report);
+        addHotspotFilesList(report);
         addFilesWithMostContributors(report);
         addFilesWithLeastContributors(report);
         addCorrelations(report);
@@ -220,6 +221,19 @@ public class FileChurnReportGenerator {
         report.endSection();
     }
 
+    private void addHotspotFilesList(RichTextReport report) {
+        List<SourceFile> hotspots = codeAnalysisResults.getFilesAnalysisResults().getAllFiles().stream()
+                .filter(sourceFile -> sourceFile.getFileModificationHistory() != null)
+                .sorted((left, right) -> Double.compare(hotspotScore(right), hotspotScore(left)))
+                .limit(codeAnalysisResults.getCodeConfiguration().getAnalysis().getMaxTopListSize())
+                .collect(Collectors.toList());
+        report.startSection("Recent Maintenance Hotspots (Top " + hotspots.size() + ")", "Ranked by recent churn weighted by file size.");
+        boolean cacheSourceFiles = codeAnalysisResults.getCodeConfiguration().getAnalysis().isSaveSourceFiles();
+        report.addParagraph("Hotspots prioritize files with both frequent recent changes and larger change surface.");
+        report.addHtmlContent(FilesReportUtils.getFilesTable(hotspots, cacheSourceFiles, true, false, 500).toString());
+        report.endSection();
+    }
+
     private void addFilesWithMostContributors(RichTextReport report) {
         List<SourceFile> files = codeAnalysisResults.getFilesHistoryAnalysisResults().getFilesWithMostContributors();
         report.startSection("Files With Most Contributors (Top " + files.size() + ")", "Based on the number of unique email addresses found in commits.");
@@ -250,18 +264,18 @@ public class FileChurnReportGenerator {
             codeAnalysisResults.getFilesAnalysisResults().getAllFiles().forEach(sourceFile -> {
                 linesOfCodeMap.put(sourceFile.getRelativePath(), sourceFile.getLinesOfCode());
                 if (sourceFile.getFileModificationHistory() != null) {
-                    countributorsCountMap.put(sourceFile.getRelativePath(), sourceFile.getFileModificationHistory().countContributors());
+                    countributorsCountMap.put(sourceFile.getRelativePath(), sourceFile.getFileModificationHistory().getContributorsCount());
                 }
             });
             ProcessingStopwatch.start("reporting/file update frequency/correlations");
             correlationDiagramGenerator.addCorrelations("File Size vs. Number of Changes", "lines of code", "# changes",
                     p -> linesOfCodeMap.getOrDefault(p.getPath(), 0),
-                    p -> p.getDates().size(),
+                    p -> p.getActiveDaysCount(),
                     p -> p.getPath());
 
             correlationDiagramGenerator.addCorrelations("Number of Contributors vs. Number of Changes", "# contributors", "# changes",
                     p -> countributorsCountMap.getOrDefault(p.getPath(), 0),
-                    p -> p.getDates().size(),
+                    p -> p.getActiveDaysCount(),
                     p -> p.getPath());
 
             correlationDiagramGenerator.addCorrelations("Number of Contributors vs. File Size", "# contributors", "lines of code",
@@ -272,5 +286,14 @@ public class FileChurnReportGenerator {
             ProcessingStopwatch.end("reporting/file update frequency/correlations");
             report.endSection();
         }
+    }
+
+    private double hotspotScore(SourceFile sourceFile) {
+        FileModificationHistory history = sourceFile.getFileModificationHistory();
+        if (history == null) {
+            return 0.0;
+        }
+        int recentCommits = history.getCommitsCount90Days() > 0 ? history.getCommitsCount90Days() : history.getCommitsCount365Days();
+        return recentCommits * Math.max(1.0, Math.sqrt(Math.max(1, sourceFile.getLinesOfCode())));
     }
 }

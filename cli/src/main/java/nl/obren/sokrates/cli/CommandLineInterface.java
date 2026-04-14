@@ -157,7 +157,21 @@ public class CommandLineInterface {
             return;
         }
 
-        new GitHistoryExtractor().extractGitHistory(root);
+        String modeValue = cmd.getOptionValue(commands.getGitHistoryMode().getOpt(), "compatibility");
+        GitHistoryExtractor.Mode mode = modeValue.equalsIgnoreCase("large-repo")
+                ? GitHistoryExtractor.Mode.LARGE_REPO
+                : GitHistoryExtractor.Mode.COMPATIBILITY;
+        boolean incremental = cmd.hasOption(commands.getGitHistoryIncremental().getOpt());
+        File checkpointFile = cmd.hasOption(commands.getGitHistoryCheckpoint().getOpt())
+                ? new File(cmd.getOptionValue(commands.getGitHistoryCheckpoint().getOpt()))
+                : new File(root, "git-history.checkpoint");
+
+        if (incremental && mode != GitHistoryExtractor.Mode.LARGE_REPO) {
+            LOG.warn("Incremental extraction is only supported in large-repo mode. Falling back to full compatibility extraction.");
+            incremental = false;
+        }
+
+        new GitHistoryExtractor().extractGitHistory(root, mode, incremental, checkpointFile);
     }
 
     private void extractGitSubHistory(String[] args) throws ParseException, IOException {
@@ -711,10 +725,10 @@ public class CommandLineInterface {
                     (sourceFile) -> sourceFile.getFileModificationHistory() != null ? sourceFile.getFileModificationHistory().daysSinceLatestUpdate() : 0, (sourceFile) -> sourceFile.getLinesOfCode());
 
             addRiskColoredZoomableCircles(folder, mainSourceFiles, "update_frequency", codeConfiguration.getAnalysis().getFileUpdateFrequencyThresholds(), Palette.getHeatPalette(),
-                    (sourceFile) -> sourceFile.getFileModificationHistory() != null ? sourceFile.getFileModificationHistory().getDates().size() : 0, (sourceFile) -> sourceFile.getLinesOfCode());
+                    (sourceFile) -> sourceFile.getFileModificationHistory() != null ? sourceFile.getFileModificationHistory().getActiveDaysCount() : 0, (sourceFile) -> sourceFile.getLinesOfCode());
 
             addRiskColoredZoomableCircles(folder, mainSourceFiles, "contributors_count", codeConfiguration.getAnalysis().getFileContributorsCountThresholds(), Palette.getHeatPalette(),
-                    (sourceFile) -> sourceFile.getFileModificationHistory() != null ? sourceFile.getFileModificationHistory().countContributors() : 0, (sourceFile) -> sourceFile.getLinesOfCode());
+                    (sourceFile) -> sourceFile.getFileModificationHistory() != null ? sourceFile.getFileModificationHistory().getContributorsCount() : 0, (sourceFile) -> sourceFile.getLinesOfCode());
 
             generate3DUnitsView(folder, analysisResults);
         } catch (IOException e) {
