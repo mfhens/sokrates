@@ -1,0 +1,10 @@
+[package]
+name = "sokrates-ts-core"
+edition.workspace = true
+version.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+streaming-iterator.workspace = true
+tree-sitter.workspace = true
+tree-sitter-java.workspace = true

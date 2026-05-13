@@ -1,0 +1,115 @@
+[ {
+  "key" : "primary",
+  "components" : [ {
+    "name" : "alpha",
+    "filesCount" : 2,
+    "linesOfCode" : 17,
+    "numberOfRegexLineMatches" : 0,
+    "fileCountPerExtension" : [ {
+      "name" : "  *.java",
+      "value" : 2,
+      "description" : [ ]
+    } ],
+    "linesOfCodePerExtension" : [ {
+      "name" : "  *.java",
+      "value" : 17,
+      "description" : [ ]
+    } ]
+  }, {
+    "name" : "beta",
+    "filesCount" : 3,
+    "linesOfCode" : 21,
+    "numberOfRegexLineMatches" : 0,
+    "fileCountPerExtension" : [ {
+      "name" : "  *.java",
+      "value" : 3,
+      "description" : [ ]
+    } ],
+    "linesOfCodePerExtension" : [ {
+      "name" : "  *.java",
+      "value" : 21,
+      "description" : [ ]
+    } ]
+  } ],
+  "componentDependencies" : [ {
+    "fromComponent" : "alpha",
+    "locFrom" : 11,
+    "valueFrom" : 0.0,
+    "valueTo" : 0.0,
+    "evidence" : [ {
+      "pathFrom" : "alpha/api/AlphaService.java",
+      "evidence" : "import beta.api.BetaService;"
+    } ],
+    "toComponent" : "beta",
+    "count" : 1,
+    "text" : null,
+    "color" : "",
+    "dependencyString" : "alpha -> beta"
+  } ],
+  "componentDependenciesErrors" : [ ],
+  "logicalDecomposition" : {
+    "name" : "primary",
+    "scope" : "main",
+    "filters" : [ ],
+    "componentsFolderDepth" : 1,
+    "minComponentsCount" : 0,
+    "components" : [ {
+      "name" : "alpha",
+      "sourceFileFilters" : [ {
+        "pathPattern" : "C:\\Users\\AJ849XF\\Documents\\GitHub\\sokrates\\rust-core\\fixtures\\java-dependencies-sample\\input/alpha/.*",
+        "contentPattern" : "",
+        "exception" : false,
+        "note" : ""
+      } ],
+      "files" : [ ]
+    }, {
+      "name" : "beta",
+      "sourceFileFilters" : [ {
+        "pathPattern" : "C:\\Users\\AJ849XF\\Documents\\GitHub\\sokrates\\rust-core\\fixtures\\java-dependencies-sample\\input/beta/.*",
+        "contentPattern" : "",
+        "exception" : false,
+        "note" : ""
+      } ],
+      "files" : [ ]
+    } ],
+    "metaComponents" : [ ],
+    "groups" : [ ],
+    "includeRemainingFiles" : true,
+    "dependenciesFinder" : {
+      "useBuiltInDependencyFinders" : true,
+      "rules" : [ ],
+      "metaRules" : [ ]
+    },
+    "renderingOptions" : {
+      "orientation" : "TB",
+      "maxNumberOfDependencies" : 100,
+      "renderComponentsWithoutDependencies" : true,
+      "renderIndirectDependencies" : false,
+      "renderInternalIndirectDependencies" : false,
+      "reverseDirection" : false
+    },
+    "includeExternalComponents" : true,
+    "dependencyLinkThreshold" : 1,
+    "duplicationLinkThreshold" : 50,
+    "temporalLinkThreshold" : 1,
+    "maxSearchDepthLines" : 200
+  },
+  "linesOfCodePerComponent" : [ {
+    "name" : "alpha",
+    "value" : 17,
+    "description" : [ ]
+  }, {
+    "name" : "beta",
+    "value" : 21,
+    "description" : [ ]
+  } ],
+  "fileCountPerComponent" : [ {
+    "name" : "alpha",
+    "value" : 2,
+    "description" : [ ]
+  }, {
+    "name" : "beta",
+    "value" : 3,
+    "description" : [ ]
+  } ]
+} ]

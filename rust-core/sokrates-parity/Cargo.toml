@@ -1,0 +1,12 @@
+[package]
+name = "sokrates-parity"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sokrates-cli = { path = "../sokrates-cli" }
+sokrates-ir = { path = "../sokrates-ir" }
+zip.workspace = true

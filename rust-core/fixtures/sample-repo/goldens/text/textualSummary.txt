@@ -1,0 +1,28 @@
+Start of analysis
+Found 3 files
+0 are in the main's scope  (0 lines of code)
+0 are in the test's scope  (0 lines of code)
+0 are in the generated's scope  (0 lines of code)
+1 are in the build and deployment's scope  (8 lines of code)
+  *.xml: 1 files, (8 lines of code)
+2 are in the other's scope  (14 lines of code)
+  *.java: 2 files, (14 lines of code)
+Excluded from analyses 0 files
+Analysing dependencies...
+  - "primary", found 0 dependencies (0 component dependencies)
+0 are in the CONCERN_general\TODOs's scope  (0 lines of code)
+Analysing units...
+Basic unit metrics...
+  - found 0 units (0 lines of code in units)
+Unit size 0 / 0 / 0 / 0 / 0
+Unit size per component:
+Unit size per extension:
+Conditional complexity: 0 / 0 / 0 / 0 / 0
+Conditional complexity per component:
+Conditional complexity per extension:
+Analysing duplication...
+  - found 0 duplicates (0 duplicated lines vs. 0 cleaned lines) in 0 files
+  - per component:primary
+  - per extension:
+Total analysis time: .17s
+

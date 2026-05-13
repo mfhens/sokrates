@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static java.nio.file.FileSystems.getDefault;
 import static junit.framework.TestCase.assertEquals;
 
 
 public class NamedSourceCodeAspectUtilsTest {
+    private static final String PATH_SEPARATOR = "/";
 
     @Test
     public void getSourceCodeAspectBasedOnFolderDepth() {
@@ -58,8 +58,8 @@ public class NamedSourceCodeAspectUtilsTest {
                 new SourceFile(new File("/root/folder2/D.java"), "").relativize(new File("/root"))
         );
         assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 2).size(), 3);
-        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 2).get(0), "folder1" + getDefault().getSeparator() + "folder1a");
-        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 2).get(1), "folder1" + getDefault().getSeparator() + "folder1b");
+        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 2).get(0), "folder1" + PATH_SEPARATOR + "folder1a");
+        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 2).get(1), "folder1" + PATH_SEPARATOR + "folder1b");
         assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 2).get(2), "folder2");
     }
 
@@ -69,11 +69,11 @@ public class NamedSourceCodeAspectUtilsTest {
         SourceFile sourceFile = new SourceFile(new File("/a/b/c/d/e/J.java"));
         sourceFile.setRelativePath("b/c/d/e/J.java");
         assertEquals(SourceCodeAspectUtils.getFolderBasedComponentName(sourceFile, 1), "b");
-        assertEquals(SourceCodeAspectUtils.getFolderBasedComponentName(sourceFile, 2), "b" + getDefault().getSeparator() + "c");
-        assertEquals(SourceCodeAspectUtils.getFolderBasedComponentName(sourceFile, 3), "b" + getDefault().getSeparator() + "c" + getDefault().getSeparator() + "d");
-        assertEquals(SourceCodeAspectUtils.getFolderBasedComponentName(sourceFile, 4), "b" + getDefault().getSeparator() + "c" + getDefault().getSeparator() + "d" + getDefault().getSeparator() + "e");
-        assertEquals(SourceCodeAspectUtils.getFolderBasedComponentName(sourceFile, 5), "b" + getDefault().getSeparator() + "c" + getDefault().getSeparator() + "d" + getDefault().getSeparator() + "e");
-        assertEquals(SourceCodeAspectUtils.getFolderBasedComponentName(sourceFile, 6), "b" + getDefault().getSeparator() + "c" + getDefault().getSeparator() + "d" + getDefault().getSeparator() + "e");
+        assertEquals(SourceCodeAspectUtils.getFolderBasedComponentName(sourceFile, 2), "b" + PATH_SEPARATOR + "c");
+        assertEquals(SourceCodeAspectUtils.getFolderBasedComponentName(sourceFile, 3), "b" + PATH_SEPARATOR + "c" + PATH_SEPARATOR + "d");
+        assertEquals(SourceCodeAspectUtils.getFolderBasedComponentName(sourceFile, 4), "b" + PATH_SEPARATOR + "c" + PATH_SEPARATOR + "d" + PATH_SEPARATOR + "e");
+        assertEquals(SourceCodeAspectUtils.getFolderBasedComponentName(sourceFile, 5), "b" + PATH_SEPARATOR + "c" + PATH_SEPARATOR + "d" + PATH_SEPARATOR + "e");
+        assertEquals(SourceCodeAspectUtils.getFolderBasedComponentName(sourceFile, 6), "b" + PATH_SEPARATOR + "c" + PATH_SEPARATOR + "d" + PATH_SEPARATOR + "e");
     }
 
 
@@ -89,13 +89,13 @@ public class NamedSourceCodeAspectUtilsTest {
         assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 1).size(), 1);
         assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 1).get(0), "a");
         assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 2).size(), 1);
-        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 2).get(0), "a" + getDefault().getSeparator() + "b");
+        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 2).get(0), "a" + PATH_SEPARATOR + "b");
         assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 3).size(), 1);
-        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 3).get(0), "a" + getDefault().getSeparator() + "b" + getDefault().getSeparator() + "c");
+        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 3).get(0), "a" + PATH_SEPARATOR + "b" + PATH_SEPARATOR + "c");
         assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 4).size(), 1);
-        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 4).get(0), "a" + getDefault().getSeparator() + "b" + getDefault().getSeparator() + "c");
+        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 4).get(0), "a" + PATH_SEPARATOR + "b" + PATH_SEPARATOR + "c");
         assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 5).size(), 1);
-        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 5).get(0), "a" + getDefault().getSeparator() + "b" + getDefault().getSeparator() + "c");
+        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 5).get(0), "a" + PATH_SEPARATOR + "b" + PATH_SEPARATOR + "c");
     }
 
     @Test
@@ -131,19 +131,19 @@ public class NamedSourceCodeAspectUtilsTest {
         assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 1).size(), 1);
         assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 1).get(0), "a");
         assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 2).size(), 1);
-        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 2).get(0), "a"+ getDefault().getSeparator() +"b");
+        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 2).get(0), "a"+ PATH_SEPARATOR +"b");
         assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 3).size(), 3);
-        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 3).get(0), "a" + getDefault().getSeparator() + "b" + getDefault().getSeparator() + "c");
-        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 3).get(1), "a" + getDefault().getSeparator() + "b" + getDefault().getSeparator() + "e");
-        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 3).get(2), "a" + getDefault().getSeparator() + "b" + getDefault().getSeparator() + "h");
+        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 3).get(0), "a" + PATH_SEPARATOR + "b" + PATH_SEPARATOR + "c");
+        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 3).get(1), "a" + PATH_SEPARATOR + "b" + PATH_SEPARATOR + "e");
+        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 3).get(2), "a" + PATH_SEPARATOR + "b" + PATH_SEPARATOR + "h");
         assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 4).size(), 3);
-        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 4).get(0), "a" + getDefault().getSeparator() + "b" + getDefault().getSeparator() + "c");
-        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 4).get(1), "a" + getDefault().getSeparator() + "b" + getDefault().getSeparator() + "e" + getDefault().getSeparator() + "f");
-        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 4).get(2), "a" + getDefault().getSeparator() + "b"+ getDefault().getSeparator() +"h"+ getDefault().getSeparator() +"i");
+        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 4).get(0), "a" + PATH_SEPARATOR + "b" + PATH_SEPARATOR + "c");
+        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 4).get(1), "a" + PATH_SEPARATOR + "b" + PATH_SEPARATOR + "e" + PATH_SEPARATOR + "f");
+        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 4).get(2), "a" + PATH_SEPARATOR + "b"+ PATH_SEPARATOR +"h"+ PATH_SEPARATOR +"i");
         assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 5).size(), 3);
-        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 5).get(0), "a"+ getDefault().getSeparator() +"b" + getDefault().getSeparator() + "c");
-        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 5).get(1), "a" + getDefault().getSeparator() + "b" + getDefault().getSeparator() + "e" + getDefault().getSeparator() + "f");
-        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 5).get(2), "a" + getDefault().getSeparator() + "b" + getDefault().getSeparator() + "h" + getDefault().getSeparator() + "i");
+        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 5).get(0), "a"+ PATH_SEPARATOR +"b" + PATH_SEPARATOR + "c");
+        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 5).get(1), "a" + PATH_SEPARATOR + "b" + PATH_SEPARATOR + "e" + PATH_SEPARATOR + "f");
+        assertEquals(SourceCodeAspectUtils.getUniquePaths(sourceFiles, 5).get(2), "a" + PATH_SEPARATOR + "b" + PATH_SEPARATOR + "h" + PATH_SEPARATOR + "i");
     }
 
     @Test

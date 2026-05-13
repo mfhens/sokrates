@@ -1,0 +1,6 @@
+Path	Lines of Code
+alpha/api/AlphaService.java	11
+alpha/internal/AlphaHelper.java	6
+beta/api/BetaFacade.java	6
+beta/api/BetaService.java	9
+beta/internal/BetaHelper.java	6

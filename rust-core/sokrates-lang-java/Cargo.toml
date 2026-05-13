@@ -1,0 +1,11 @@
+[package]
+name = "sokrates-lang-java"
+edition.workspace = true
+version.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+regex.workspace = true
+sokrates-ir = { path = "../sokrates-ir" }
+sokrates-ts-core = { path = "../sokrates-ts-core" }
+tree-sitter.workspace = true

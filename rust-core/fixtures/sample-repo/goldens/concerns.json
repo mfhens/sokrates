@@ -1,0 +1,30 @@
+[
+  {
+    "key": "general",
+    "concerns": [
+      {
+        "name": "TODOs",
+        "filesCount": 0,
+        "linesOfCode": 0,
+        "numberOfRegexLineMatches": 0,
+        "fileCountPerExtension": [],
+        "linesOfCodePerExtension": []
+      }
+    ],
+    "concernsGroup": null,
+    "fileCountPerConcern": [
+      {
+        "name": "TODOs",
+        "value": 0,
+        "description": []
+      }
+    ],
+    "linesOfCodePerConcern": [
+      {
+        "name": "TODOs",
+        "value": 0,
+        "description": []
+      }
+    ]
+  }
+]

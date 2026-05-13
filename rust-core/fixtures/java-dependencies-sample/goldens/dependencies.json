@@ -1,0 +1,112 @@
+[ {
+  "fromFiles" : [ {
+    "file" : {
+      "relativePath" : "alpha/api/AlphaService.java",
+      "extension" : "java",
+      "linesOfCode" : 11,
+      "components" : [ "primary::alpha" ],
+      "concerns" : [ "::Unclassified" ]
+    },
+    "codeFragment" : "import alpha.internal.AlphaHelper;"
+  } ],
+  "from" : {
+    "anchor" : "alpha.api",
+    "codeFragment" : "package alpha.api;",
+    "dependencyPatterns" : [ "import.* alpha[.]api([.][A-Z].*|[.][*]|);" ],
+    "files" : [ {
+      "relativePath" : "alpha/api/AlphaService.java",
+      "extension" : "java",
+      "linesOfCode" : 11,
+      "components" : [ "primary::alpha" ],
+      "concerns" : [ "::Unclassified" ]
+    } ]
+  },
+  "to" : {
+    "anchor" : "alpha.internal",
+    "codeFragment" : "package alpha.internal;",
+    "dependencyPatterns" : [ "import.* alpha[.]internal([.][A-Z].*|[.][*]|);" ],
+    "files" : [ {
+      "relativePath" : "alpha/internal/AlphaHelper.java",
+      "extension" : "java",
+      "linesOfCode" : 6,
+      "components" : [ "primary::alpha" ],
+      "concerns" : [ "::Unclassified" ]
+    } ]
+  }
+}, {
+  "fromFiles" : [ {
+    "file" : {
+      "relativePath" : "alpha/api/AlphaService.java",
+      "extension" : "java",
+      "linesOfCode" : 11,
+      "components" : [ "primary::alpha" ],
+      "concerns" : [ "::Unclassified" ]
+    },
+    "codeFragment" : "import beta.api.BetaService;"
+  } ],
+  "from" : {
+    "anchor" : "alpha.api",
+    "codeFragment" : "package alpha.api;",
+    "dependencyPatterns" : [ "import.* alpha[.]api([.][A-Z].*|[.][*]|);" ],
+    "files" : [ {
+      "relativePath" : "alpha/api/AlphaService.java",
+      "extension" : "java",
+      "linesOfCode" : 11,
+      "components" : [ "primary::alpha" ],
+      "concerns" : [ "::Unclassified" ]
+    } ]
+  },
+  "to" : {
+    "anchor" : "beta.api",
+    "codeFragment" : "package beta.api;",
+    "dependencyPatterns" : [ "import.* beta[.]api([.][A-Z].*|[.][*]|);" ],
+    "files" : [ {
+      "relativePath" : "beta/api/BetaFacade.java",
+      "extension" : "java",
+      "linesOfCode" : 6,
+      "components" : [ "primary::beta" ],
+      "concerns" : [ "::Unclassified" ]
+    }, {
+      "relativePath" : "beta/api/BetaService.java",
+      "extension" : "java",
+      "linesOfCode" : 9,
+      "components" : [ "primary::beta" ],
+      "concerns" : [ "::Unclassified" ]
+    } ]
+  }
+}, {
+  "fromFiles" : [ {
+    "file" : {
+      "relativePath" : "alpha/api/AlphaService.java",
+      "extension" : "java",
+      "linesOfCode" : 11,
+      "components" : [ "primary::alpha" ],
+      "concerns" : [ "::Unclassified" ]
+    },
+    "codeFragment" : "import beta.internal.BetaHelper;"
+  } ],
+  "from" : {
+    "anchor" : "alpha.api",
+    "codeFragment" : "package alpha.api;",
+    "dependencyPatterns" : [ "import.* alpha[.]api([.][A-Z].*|[.][*]|);" ],
+    "files" : [ {
+      "relativePath" : "alpha/api/AlphaService.java",
+      "extension" : "java",
+      "linesOfCode" : 11,
+      "components" : [ "primary::alpha" ],
+      "concerns" : [ "::Unclassified" ]
+    } ]
+  },
+  "to" : {
+    "anchor" : "beta.internal",
+    "codeFragment" : "package beta.internal;",
+    "dependencyPatterns" : [ "import.* beta[.]internal([.][A-Z].*|[.][*]|);" ],
+    "files" : [ {
+      "relativePath" : "beta/internal/BetaHelper.java",
+      "extension" : "java",
+      "linesOfCode" : 6,
+      "components" : [ "primary::beta" ],
+      "concerns" : [ "::Unclassified" ]
+    } ]
+  }
+} ]

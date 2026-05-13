@@ -1,0 +1,36 @@
+id: 1
+unit: public String classify()
+file: src/main/java/app/Calculator.java
+start line: 15
+end line: 22
+size: 8 LOC
+McCabe index: 4
+number of parameters: 1
+
+id: 2
+unit: static
+file: src/main/java/app/Calculator.java
+start line: 4
+end line: 6
+size: 3 LOC
+McCabe index: 1
+number of parameters: 0
+
+id: 3
+unit: public int add()
+file: src/main/java/app/Calculator.java
+start line: 11
+end line: 13
+size: 3 LOC
+McCabe index: 1
+number of parameters: 2
+
+id: 4
+unit: public Calculator()
+file: src/main/java/app/Calculator.java
+start line: 8
+end line: 9
+size: 2 LOC
+McCabe index: 1
+number of parameters: 0
+

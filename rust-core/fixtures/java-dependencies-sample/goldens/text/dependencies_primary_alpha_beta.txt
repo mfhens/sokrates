@@ -1,0 +1,6 @@
+from: alpha
+to: beta
+evidence:
+ - file: "alpha/api/AlphaService.java"
+   contains "import beta.api.BetaService;"
+

@@ -1,0 +1,37 @@
+Start of analysis
+Found 2 files
+1 are in the main's scope  (19 lines of code)
+  *.java: 1 files, (19 lines of code)
+0 are in the test's scope  (0 lines of code)
+0 are in the generated's scope  (0 lines of code)
+1 are in the build and deployment's scope  (8 lines of code)
+  *.xml: 1 files, (8 lines of code)
+0 are in the other's scope  (0 lines of code)
+Excluded from analyses 0 files
+Analysing dependencies...
+1 are in the DECOMPOSITION_primary\src's scope  (19 lines of code)
+  *.java: 1 files, (19 lines of code)
+  - "primary", found 0 dependencies (0 component dependencies)
+0 are in the CONCERN_general\TODOs's scope  (0 lines of code)
+1 are in the CONCERN_general\Unclassified's scope  (19 lines of code)
+  *.java: 1 files, (19 lines of code)
+Analysing units...
+Basic unit metrics...
+  - found 4 units (16 lines of code in units)
+Unit size 16 / 0 / 0 / 0 / 0
+Unit size per component:
+Unit Size Component src: 16 / 0 / 0 / 0 / 0
+Unit size per extension:
+Unit Size Extension java: 16 / 0 / 0 / 0 / 0
+Conditional complexity: 16 / 0 / 0 / 0 / 0
+Conditional complexity per component:
+Conditional Complexity Component src 16 / 0 / 0 / 0 / 0
+Conditional complexity per extension:
+Conditional Complexity Component java: 16 / 0 / 0 / 0 / 0
+Analysing duplication...
+  - found 0 duplicates (0 duplicated lines vs. 12 cleaned lines) in 0 files
+  - per component:primary
+     - "src": 0 duplicated lines vs. 12 total lines
+  - per extension:
+Total analysis time: .19s
+

@@ -1,0 +1,708 @@
+{
+  "metadata" : {
+    "name" : "sample-repo",
+    "description" : "Fixture repo for Rust parity tests",
+    "tooltip" : "",
+    "logoLink" : "",
+    "links" : [ ]
+  },
+  "metricsList" : {
+    "metrics" : [ {
+      "id" : "TOTAL_NUMBER_OF_FILES",
+      "value" : 3,
+      "description" : "Total number of files in the source folder"
+    }, {
+      "id" : "NUMBER_OF_FILES_MAIN",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "LINES_OF_CODE_MAIN",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "NUMBER_OF_FILES_TEST",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "LINES_OF_CODE_TEST",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "TEST_VS_MAIN_LINES_OF_CODE_PERCENTAGE",
+      "value" : 0.0,
+      "description" : "Test / main code ratio"
+    }, {
+      "id" : "NUMBER_OF_FILES_GENERATED",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "LINES_OF_CODE_GENERATED",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "NUMBER_OF_FILES_BUILD_AND_DEPLOYMENT",
+      "value" : 1,
+      "description" : null
+    }, {
+      "id" : "LINES_OF_CODE_BUILD_AND_DEPLOYMENT",
+      "value" : 8,
+      "description" : null
+    }, {
+      "id" : "NUMBER_OF_FILES_BUILD_AND_DEPLOYMENT_EXT_XML",
+      "value" : 1,
+      "description" : null
+    }, {
+      "id" : "LINES_OF_CODE_BUILD_AND_DEPLOYMENT_EXT_XML",
+      "value" : 8,
+      "description" : null
+    }, {
+      "id" : "NUMBER_OF_FILES_OTHER",
+      "value" : 2,
+      "description" : null
+    }, {
+      "id" : "LINES_OF_CODE_OTHER",
+      "value" : 14,
+      "description" : null
+    }, {
+      "id" : "NUMBER_OF_FILES_OTHER_EXT_JAVA",
+      "value" : 2,
+      "description" : null
+    }, {
+      "id" : "LINES_OF_CODE_OTHER_EXT_JAVA",
+      "value" : 14,
+      "description" : null
+    }, {
+      "id" : "NUMBER_OF_DEPENDENCY_LINKS_DECOMPOSITION_PRIMARY",
+      "value" : 0,
+      "description" : "Number of anchor dependencies"
+    }, {
+      "id" : "NUMBER_OF_DEPENDENCIES_DECOMPOSITION_PRIMARY",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "NUMBER_OF_PLACES_WITH_CYCLIC_DEPENDENCIES_DECOMPOSITION_PRIMARY",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "NUMBER_OF_FILES_CONCERN_GENERAL_TODOS",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "LINES_OF_CODE_CONCERN_GENERAL_TODOS",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "NEGLIGIBLE_RISK_FILE_SIZE_COUNT",
+      "value" : 0,
+      "description" : "Number of  files with 100 or less lines of code"
+    }, {
+      "id" : "LOW_RISK_FILE_SIZE_COUNT",
+      "value" : 0,
+      "description" : "Number of  files with 100 to 200 lines of code"
+    }, {
+      "id" : "MEDIUM_RISK_FILE_SIZE_COUNT",
+      "value" : 0,
+      "description" : "Number of  files with 200 to 500 lines of code"
+    }, {
+      "id" : "HIGH_RISK_FILE_SIZE_COUNT",
+      "value" : 0,
+      "description" : "Number of  files with 500 to 1000 lines of code"
+    }, {
+      "id" : "VERY_HIGH_RISK_FILE_SIZE_COUNT",
+      "value" : 0,
+      "description" : "Number of  files with more than 1000 lines of code"
+    }, {
+      "id" : "NEGLIGIBLE_RISK_FILE_SIZE_LOC",
+      "value" : 0,
+      "description" : "Lines of code in  files with 100 or less lines of code"
+    }, {
+      "id" : "LOW_RISK_FILE_SIZE_LOC",
+      "value" : 0,
+      "description" : "Lines of code in  files with 100 to 200 lines of code"
+    }, {
+      "id" : "MEDIUM_RISK_FILE_SIZE_LOC",
+      "value" : 0,
+      "description" : "Lines of code in  files with 200 to 500 lines of code"
+    }, {
+      "id" : "HIGH_RISK_FILE_SIZE_LOC",
+      "value" : 0,
+      "description" : "Lines of code in  files with 500 to 1000 lines of code"
+    }, {
+      "id" : "VERY_HIGH_RISK_FILE_SIZE_LOC",
+      "value" : 0,
+      "description" : "Lines of code in  files with more than 1000 lines of code"
+    }, {
+      "id" : "NUMBER_OF_UNITS",
+      "value" : 0,
+      "description" : "Number of units"
+    }, {
+      "id" : "LINES_OF_CODE_IN_UNITS",
+      "value" : 0,
+      "description" : "Lines of code in units"
+    }, {
+      "id" : "LINES_OF_CODE_OUTSIDE_UNITS",
+      "value" : 0,
+      "description" : "Lines of code in units"
+    }, {
+      "id" : "UNIT_SIZE_NEGLIGIBLE_RISK_LOC",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "UNIT_SIZE_NEGLIGIBLE_RISK_PERCENTAGE",
+      "value" : 0.0,
+      "description" : null
+    }, {
+      "id" : "UNIT_SIZE_NEGLIGIBLE_RISK_COUNT",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "UNIT_SIZE_LOW_RISK_LOC",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "UNIT_SIZE_LOW_RISK_PERCENTAGE",
+      "value" : 0.0,
+      "description" : null
+    }, {
+      "id" : "UNIT_SIZE_LOW_RISK_COUNT",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "UNIT_SIZE_MEDIUM_RISK_LOC",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "UNIT_SIZE_MEDIUM_RISK_PERCENTAGE",
+      "value" : 0.0,
+      "description" : null
+    }, {
+      "id" : "UNIT_SIZE_MEDIUM_RISK_COUNT",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "UNIT_SIZE_HIGH_RISK_LOC",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "UNIT_SIZE_HIGH_RISK_PERCENTAGE",
+      "value" : 0.0,
+      "description" : null
+    }, {
+      "id" : "UNIT_SIZE_HIGH_RISK_COUNT",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "UNIT_SIZE_VERY_HIGH_RISK_LOC",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "UNIT_SIZE_VERY_HIGH_RISK_PERCENTAGE",
+      "value" : 0.0,
+      "description" : null
+    }, {
+      "id" : "UNIT_SIZE_VERY_HIGH_RISK_COUNT",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "CONDITIONAL_COMPLEXITY_NEGLIGIBLE_RISK_LOC",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "CONDITIONAL_COMPLEXITY_NEGLIGIBLE_RISK_PERCENTAGE",
+      "value" : 0.0,
+      "description" : null
+    }, {
+      "id" : "CONDITIONAL_COMPLEXITY_NEGLIGIBLE_RISK_COUNT",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "CONDITIONAL_COMPLEXITY_LOW_RISK_LOC",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "CONDITIONAL_COMPLEXITY_LOW_RISK_PERCENTAGE",
+      "value" : 0.0,
+      "description" : null
+    }, {
+      "id" : "CONDITIONAL_COMPLEXITY_LOW_RISK_COUNT",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "CONDITIONAL_COMPLEXITY_MEDIUM_RISK_LOC",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "CONDITIONAL_COMPLEXITY_MEDIUM_RISK_PERCENTAGE",
+      "value" : 0.0,
+      "description" : null
+    }, {
+      "id" : "CONDITIONAL_COMPLEXITY_MEDIUM_RISK_COUNT",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "CONDITIONAL_COMPLEXITY_HIGH_RISK_LOC",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "CONDITIONAL_COMPLEXITY_HIGH_RISK_PERCENTAGE",
+      "value" : 0.0,
+      "description" : null
+    }, {
+      "id" : "CONDITIONAL_COMPLEXITY_HIGH_RISK_COUNT",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "CONDITIONAL_COMPLEXITY_VERY_HIGH_RISK_LOC",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "CONDITIONAL_COMPLEXITY_VERY_HIGH_RISK_PERCENTAGE",
+      "value" : 0.0,
+      "description" : null
+    }, {
+      "id" : "CONDITIONAL_COMPLEXITY_VERY_HIGH_RISK_COUNT",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "CONDITIONAL_COMPLEXITY_HIGH_PLUS_RISK_COUNT",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "CONDITIONAL_COMPLEXITY_HIGH_PLUS_RISK_LOC",
+      "value" : 0,
+      "description" : null
+    }, {
+      "id" : "DUPLICATION_NUMBER_OF_DUPLICATES",
+      "value" : 0,
+      "description" : "Number of duplicates"
+    }, {
+      "id" : "DUPLICATION_NUMBER_OF_FILES_WITH_DUPLICATES",
+      "value" : 0,
+      "description" : "Number of files with duplicates"
+    }, {
+      "id" : "DUPLICATION_NUMBER_OF_DUPLICATED_LINES",
+      "value" : 0,
+      "description" : "Number of duplicated lines"
+    }, {
+      "id" : "DUPLICATION_NUMBER_OF_CLEANED_LINES",
+      "value" : 0,
+      "description" : "Number of lines after cleaning for duplication calculations"
+    }, {
+      "id" : "DUPLICATION_PERCENTAGE",
+      "value" : "NaN",
+      "description" : "Duplication percentage"
+    }, {
+      "id" : "UNIT_DUPLICATES_COUNT",
+      "value" : 0,
+      "description" : "Unit duplicates"
+    }, {
+      "id" : "TOTAL_ANALYSIS_TIME_IN_MILLIS",
+      "value" : 243,
+      "description" : "Total analysis time in milliseconds"
+    } ]
+  },
+  "controlResults" : {
+    "goalsAnalysisResults" : [ {
+      "metricsWithGoal" : {
+        "goal" : "Keep the system simple and easy to change",
+        "description" : "Aim at keeping the system size modest (less than 200,000 LOC is good), duplication low (less than 5% is good), files small (no files longer than 1000 LOC is good), and units simple (no units with more than 25 decision points is good).",
+        "controls" : [ {
+          "metric" : "LINES_OF_CODE_MAIN",
+          "description" : "Total number of lines of main code",
+          "desiredRange" : {
+            "min" : "0",
+            "max" : "200000",
+            "tolerance" : "20000"
+          }
+        }, {
+          "metric" : "DUPLICATION_PERCENTAGE",
+          "description" : "System duplication",
+          "desiredRange" : {
+            "min" : "0",
+            "max" : "5",
+            "tolerance" : "1"
+          }
+        }, {
+          "metric" : "VERY_HIGH_RISK_FILE_SIZE_COUNT",
+          "description" : "The number of very large files",
+          "desiredRange" : {
+            "min" : "0",
+            "max" : "0",
+            "tolerance" : "1"
+          }
+        }, {
+          "metric" : "CONDITIONAL_COMPLEXITY_VERY_HIGH_RISK_COUNT",
+          "description" : "Number of very complex units",
+          "desiredRange" : {
+            "min" : "0",
+            "max" : "0",
+            "tolerance" : "1"
+          }
+        } ]
+      },
+      "controlStatuses" : [ {
+        "control" : {
+          "metric" : "LINES_OF_CODE_MAIN",
+          "description" : "Total number of lines of main code",
+          "desiredRange" : {
+            "min" : "0",
+            "max" : "200000",
+            "tolerance" : "20000"
+          }
+        },
+        "metric" : {
+          "id" : "LINES_OF_CODE_MAIN",
+          "value" : 0,
+          "description" : null
+        },
+        "status" : "OK"
+      }, {
+        "control" : {
+          "metric" : "DUPLICATION_PERCENTAGE",
+          "description" : "System duplication",
+          "desiredRange" : {
+            "min" : "0",
+            "max" : "5",
+            "tolerance" : "1"
+          }
+        },
+        "metric" : {
+          "id" : "DUPLICATION_PERCENTAGE",
+          "value" : "NaN",
+          "description" : "Duplication percentage"
+        },
+        "status" : "FAILED"
+      }, {
+        "control" : {
+          "metric" : "VERY_HIGH_RISK_FILE_SIZE_COUNT",
+          "description" : "The number of very large files",
+          "desiredRange" : {
+            "min" : "0",
+            "max" : "0",
+            "tolerance" : "1"
+          }
+        },
+        "metric" : {
+          "id" : "VERY_HIGH_RISK_FILE_SIZE_COUNT",
+          "value" : 0,
+          "description" : "Number of  files with more than 1000 lines of code"
+        },
+        "status" : "OK"
+      }, {
+        "control" : {
+          "metric" : "CONDITIONAL_COMPLEXITY_VERY_HIGH_RISK_COUNT",
+          "description" : "Number of very complex units",
+          "desiredRange" : {
+            "min" : "0",
+            "max" : "0",
+            "tolerance" : "1"
+          }
+        },
+        "metric" : {
+          "id" : "CONDITIONAL_COMPLEXITY_VERY_HIGH_RISK_COUNT",
+          "value" : 0,
+          "description" : null
+        },
+        "status" : "OK"
+      } ]
+    } ]
+  },
+  "totalNumberOfFilesInScope" : 3,
+  "mainAspectAnalysisResults" : {
+    "name" : null,
+    "filesCount" : 0,
+    "linesOfCode" : 0,
+    "numberOfRegexLineMatches" : 0,
+    "fileCountPerExtension" : [ ],
+    "linesOfCodePerExtension" : [ ]
+  },
+  "testAspectAnalysisResults" : {
+    "name" : null,
+    "filesCount" : 0,
+    "linesOfCode" : 0,
+    "numberOfRegexLineMatches" : 0,
+    "fileCountPerExtension" : [ ],
+    "linesOfCodePerExtension" : [ ]
+  },
+  "generatedAspectAnalysisResults" : {
+    "name" : null,
+    "filesCount" : 0,
+    "linesOfCode" : 0,
+    "numberOfRegexLineMatches" : 0,
+    "fileCountPerExtension" : [ ],
+    "linesOfCodePerExtension" : [ ]
+  },
+  "buildAndDeployAspectAnalysisResults" : {
+    "name" : null,
+    "filesCount" : 1,
+    "linesOfCode" : 8,
+    "numberOfRegexLineMatches" : 0,
+    "fileCountPerExtension" : [ {
+      "name" : "  *.xml",
+      "value" : 1,
+      "description" : [ ]
+    } ],
+    "linesOfCodePerExtension" : [ {
+      "name" : "  *.xml",
+      "value" : 8,
+      "description" : [ ]
+    } ]
+  },
+  "otherAspectAnalysisResults" : {
+    "name" : null,
+    "filesCount" : 2,
+    "linesOfCode" : 14,
+    "numberOfRegexLineMatches" : 0,
+    "fileCountPerExtension" : [ {
+      "name" : "  *.java",
+      "value" : 2,
+      "description" : [ ]
+    } ],
+    "linesOfCodePerExtension" : [ {
+      "name" : "  *.java",
+      "value" : 14,
+      "description" : [ ]
+    } ]
+  },
+  "logicalDecompositionsAnalysisResults" : [ {
+    "key" : "primary",
+    "components" : [ ],
+    "componentDependencies" : [ ],
+    "componentDependenciesErrors" : [ ],
+    "logicalDecomposition" : {
+      "name" : "primary",
+      "scope" : "main",
+      "filters" : [ ],
+      "componentsFolderDepth" : 1,
+      "minComponentsCount" : 0,
+      "components" : [ ],
+      "metaComponents" : [ ],
+      "groups" : [ ],
+      "includeRemainingFiles" : true,
+      "dependenciesFinder" : {
+        "useBuiltInDependencyFinders" : true,
+        "rules" : [ ],
+        "metaRules" : [ ]
+      },
+      "renderingOptions" : {
+        "orientation" : "TB",
+        "maxNumberOfDependencies" : 100,
+        "renderComponentsWithoutDependencies" : true,
+        "renderIndirectDependencies" : false,
+        "renderInternalIndirectDependencies" : false,
+        "reverseDirection" : false
+      },
+      "includeExternalComponents" : true,
+      "dependencyLinkThreshold" : 1,
+      "duplicationLinkThreshold" : 50,
+      "temporalLinkThreshold" : 1,
+      "maxSearchDepthLines" : 200
+    },
+    "linesOfCodePerComponent" : [ ],
+    "fileCountPerComponent" : [ ]
+  } ],
+  "concernsAnalysisResults" : [ {
+    "key" : "general",
+    "concerns" : [ {
+      "name" : "TODOs",
+      "filesCount" : 0,
+      "linesOfCode" : 0,
+      "numberOfRegexLineMatches" : 0,
+      "fileCountPerExtension" : [ ],
+      "linesOfCodePerExtension" : [ ]
+    } ],
+    "concernsGroup" : null,
+    "linesOfCodePerConcern" : [ {
+      "name" : "TODOs",
+      "value" : 0,
+      "description" : [ ]
+    } ],
+    "fileCountPerConcern" : [ {
+      "name" : "TODOs",
+      "value" : 0,
+      "description" : [ ]
+    } ]
+  } ],
+  "foundTags" : [ {
+    "tagRule" : {
+      "tag" : "maven",
+      "color" : "#B9D9EB",
+      "pathPatterns" : [ "(|.*/)pom[.]xml" ],
+      "excludePathPatterns" : [ ]
+    },
+    "evidence" : "pom.xml"
+  } ],
+  "filesAnalysisResults" : {
+    "overallFileSizeDistribution" : {
+      "key" : "",
+      "lowRiskThreshold" : 100,
+      "mediumRiskThreshold" : 200,
+      "highRiskThreshold" : 500,
+      "veryHighRiskThreshold" : 1000,
+      "negligibleRiskValue" : 0,
+      "lowRiskValue" : 0,
+      "mediumRiskValue" : 0,
+      "highRiskValue" : 0,
+      "veryHighRiskValue" : 0,
+      "lowRiskCount" : 0,
+      "negligibleRiskCount" : 0,
+      "mediumRiskCount" : 0,
+      "highRiskCount" : 0,
+      "veryHighRiskCount" : 0,
+      "negligibleRiskLabel" : "1-100",
+      "lowRiskLabel" : "101-200",
+      "mediumRiskLabel" : "201-500",
+      "highRiskLabel" : "501-1000",
+      "veryHighRiskLabel" : "1001+",
+      "valueUnit" : "LOC",
+      "countUnit" : "files",
+      "negligibleRiskPercentage" : 0.0,
+      "veryHighRiskPercentage" : 0.0,
+      "mediumRiskPercentage" : 0.0,
+      "highRiskPercentage" : 0.0,
+      "lowRiskPercentage" : 0.0,
+      "totalValue" : 0,
+      "totalCount" : 0
+    },
+    "fileSizeDistributionPerExtension" : [ ],
+    "fileSizeDistributionPerLogicalDecomposition" : [ {
+      "name" : "primary",
+      "fileSizeDistributionPerComponent" : [ ]
+    } ],
+    "longestFiles" : [ ],
+    "filesWithMostUnits" : [ ]
+  },
+  "filesHistoryAnalysisResults" : {
+    "overallFileLastModifiedDistribution" : null,
+    "overallFileFirstModifiedDistribution" : null,
+    "overallFileChangeDistribution" : null,
+    "overallContributorsCountDistribution" : null,
+    "filesWithoutCommitHistoryCount" : 0,
+    "filesWithoutCommitHistoryLinesOfCode" : 0,
+    "changeDistributionPerExtension" : [ ],
+    "lastModifiedDistributionPerExtension" : [ ],
+    "firstModifiedDistributionPerExtension" : [ ],
+    "changeDistributionPerLogicalDecomposition" : [ ],
+    "firstModifiedDistributionPerLogicalDecomposition" : [ ],
+    "lastModifiedDistributionPerLogicalDecomposition" : [ ],
+    "oldestFiles" : [ ],
+    "youngestFiles" : [ ],
+    "mostRecentlyChangedFiles" : [ ],
+    "mostPreviouslyChangedFiles" : [ ],
+    "mostChangedFiles" : [ ],
+    "filesWithMostContributors" : [ ],
+    "filesWithLeastContributors" : [ ],
+    "firstDate" : "",
+    "latestDate" : "",
+    "daysBetweenFirstAndLastDate" : 0,
+    "weeks" : 0,
+    "estimatedWorkindDays" : 0,
+    "activeDays" : 0,
+    "ageInDays" : 0,
+    "historyIndexed" : false,
+    "historySource" : "",
+    "historyFileCount" : 0,
+    "historyPerExtensionPerYear" : [ ]
+  },
+  "unitsAnalysisResults" : {
+    "totalNumberOfUnits" : 0,
+    "linesOfCodeInUnits" : 0,
+    "unitSizeRiskDistribution" : {
+      "key" : "",
+      "lowRiskThreshold" : 10,
+      "mediumRiskThreshold" : 20,
+      "highRiskThreshold" : 50,
+      "veryHighRiskThreshold" : 100,
+      "negligibleRiskValue" : 0,
+      "lowRiskValue" : 0,
+      "mediumRiskValue" : 0,
+      "highRiskValue" : 0,
+      "veryHighRiskValue" : 0,
+      "lowRiskCount" : 0,
+      "negligibleRiskCount" : 0,
+      "mediumRiskCount" : 0,
+      "highRiskCount" : 0,
+      "veryHighRiskCount" : 0,
+      "negligibleRiskLabel" : "1-10",
+      "lowRiskLabel" : "11-20",
+      "mediumRiskLabel" : "21-50",
+      "highRiskLabel" : "51-100",
+      "veryHighRiskLabel" : "101+",
+      "valueUnit" : "LOC",
+      "countUnit" : "files",
+      "negligibleRiskPercentage" : 0.0,
+      "veryHighRiskPercentage" : 0.0,
+      "mediumRiskPercentage" : 0.0,
+      "highRiskPercentage" : 0.0,
+      "lowRiskPercentage" : 0.0,
+      "totalValue" : 0,
+      "totalCount" : 0
+    },
+    "conditionalComplexityRiskDistribution" : {
+      "key" : "",
+      "lowRiskThreshold" : 5,
+      "mediumRiskThreshold" : 10,
+      "highRiskThreshold" : 25,
+      "veryHighRiskThreshold" : 50,
+      "negligibleRiskValue" : 0,
+      "lowRiskValue" : 0,
+      "mediumRiskValue" : 0,
+      "highRiskValue" : 0,
+      "veryHighRiskValue" : 0,
+      "lowRiskCount" : 0,
+      "negligibleRiskCount" : 0,
+      "mediumRiskCount" : 0,
+      "highRiskCount" : 0,
+      "veryHighRiskCount" : 0,
+      "negligibleRiskLabel" : "1-5",
+      "lowRiskLabel" : "6-10",
+      "mediumRiskLabel" : "11-25",
+      "highRiskLabel" : "26-50",
+      "veryHighRiskLabel" : "51+",
+      "valueUnit" : "LOC",
+      "countUnit" : "files",
+      "negligibleRiskPercentage" : 0.0,
+      "veryHighRiskPercentage" : 0.0,
+      "mediumRiskPercentage" : 0.0,
+      "highRiskPercentage" : 0.0,
+      "lowRiskPercentage" : 0.0,
+      "totalValue" : 0,
+      "totalCount" : 0
+    },
+    "unitSizeRiskDistributionPerExtension" : [ ],
+    "unitSizeRiskDistributionPerComponent" : [ [ ] ],
+    "longestUnits" : [ ],
+    "conditionalComplexityRiskDistributionPerExtension" : [ ],
+    "conditionalComplexityRiskDistributionPerComponent" : [ [ ] ],
+    "mostComplexUnits" : [ ]
+  },
+  "duplicationAnalysisResults" : {
+    "overallDuplication" : {
+      "key" : "system",
+      "numberOfDuplicates" : 0,
+      "cleanedLinesOfCode" : 0,
+      "duplicatedLinesOfCode" : 0,
+      "numberOfFilesWithDuplicates" : 0,
+      "duplicationPercentage" : 0.0
+    },
+    "duplicationPerComponent" : [ [ ] ],
+    "duplicationPerConcern" : [ ],
+    "duplicationPerExtension" : [ ],
+    "longestDuplicates" : [ ],
+    "mostFrequentDuplicates" : [ ]
+  },
+  "contributorsAnalysisResults" : {
+    "latestCommitDate" : "",
+    "contributors" : [ ],
+    "contributorsPerYear" : [ ],
+    "contributorsPerMonth" : [ ],
+    "contributorsPerDay" : [ ],
+    "contributorsPerWeek" : [ ],
+    "commitsPerExtensions" : [ ]
+  },
+  "numberOfExcludedFiles" : 0,
+  "excludedExtensions" : { },
+  "analysisStartTimeMs" : 1778606329773,
+  "maxLinesOfCode" : 14,
+  "maxFileCount" : 2
+}

@@ -1,0 +1,36 @@
+[ {
+  "relativePath" : "alpha/api/AlphaService.java",
+  "extension" : "java",
+  "linesOfCode" : 11,
+  "unitsCount" : 1,
+  "unitsMcCabeIndexSum" : 1,
+  "linesOfCodeInUnits" : 4
+}, {
+  "relativePath" : "alpha/internal/AlphaHelper.java",
+  "extension" : "java",
+  "linesOfCode" : 6,
+  "unitsCount" : 1,
+  "unitsMcCabeIndexSum" : 1,
+  "linesOfCodeInUnits" : 3
+}, {
+  "relativePath" : "beta/api/BetaFacade.java",
+  "extension" : "java",
+  "linesOfCode" : 6,
+  "unitsCount" : 1,
+  "unitsMcCabeIndexSum" : 1,
+  "linesOfCodeInUnits" : 3
+}, {
+  "relativePath" : "beta/api/BetaService.java",
+  "extension" : "java",
+  "linesOfCode" : 9,
+  "unitsCount" : 2,
+  "unitsMcCabeIndexSum" : 2,
+  "linesOfCodeInUnits" : 6
+}, {
+  "relativePath" : "beta/internal/BetaHelper.java",
+  "extension" : "java",
+  "linesOfCode" : 6,
+  "unitsCount" : 1,
+  "unitsMcCabeIndexSum" : 1,
+  "linesOfCodeInUnits" : 3
+} ]

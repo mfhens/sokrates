@@ -1,0 +1,15 @@
+[ {
+  "relativePath" : "src/main/java/demo/HelloService.java",
+  "extension" : "java",
+  "linesOfCode" : 6,
+  "unitsCount" : 0,
+  "unitsMcCabeIndexSum" : 0,
+  "linesOfCodeInUnits" : 0
+}, {
+  "relativePath" : "src/test/java/demo/HelloServiceTest.java",
+  "extension" : "java",
+  "linesOfCode" : 8,
+  "unitsCount" : 0,
+  "unitsMcCabeIndexSum" : 0,
+  "linesOfCodeInUnits" : 0
+} ]

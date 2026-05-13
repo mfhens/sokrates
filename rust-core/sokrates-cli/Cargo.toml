@@ -1,0 +1,16 @@
+[package]
+name = "sokrates-cli"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+chrono.workspace = true
+clap.workspace = true
+regex.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+walkdir.workspace = true
+zip.workspace = true
+sokrates-lang-java = { path = "../sokrates-lang-java" }
+sokrates-ir = { path = "../sokrates-ir" }

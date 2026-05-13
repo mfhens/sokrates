@@ -1,0 +1,54 @@
+id: 1
+unit: public int total()
+file: alpha/api/AlphaService.java
+start line: 9
+end line: 12
+size: 4 LOC
+McCabe index: 1
+number of parameters: 0
+
+id: 2
+unit: public int value()
+file: alpha/internal/AlphaHelper.java
+start line: 4
+end line: 6
+size: 3 LOC
+McCabe index: 1
+number of parameters: 0
+
+id: 3
+unit: public String name()
+file: beta/api/BetaFacade.java
+start line: 4
+end line: 6
+size: 3 LOC
+McCabe index: 1
+number of parameters: 0
+
+id: 4
+unit: public int base()
+file: beta/api/BetaService.java
+start line: 4
+end line: 6
+size: 3 LOC
+McCabe index: 1
+number of parameters: 0
+
+id: 5
+unit: public static int makeValue()
+file: beta/api/BetaService.java
+start line: 8
+end line: 10
+size: 3 LOC
+McCabe index: 1
+number of parameters: 0
+
+id: 6
+unit: public int delta()
+file: beta/internal/BetaHelper.java
+start line: 4
+end line: 6
+size: 3 LOC
+McCabe index: 1
+number of parameters: 0
+
